@@ -1,0 +1,12 @@
+{
+    "permissions": {
+        "auth": {
+            "vinoamplify33e4a349": [
+                "create",
+                "read",
+                "update",
+                "delete"
+            ]
+        }
+    }
+}

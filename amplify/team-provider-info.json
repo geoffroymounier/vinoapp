@@ -1,0 +1,22 @@
+{
+    "master": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-vinoamplify-master-230828-authRole",
+            "UnauthRoleArn": "arn:aws:iam::831303585030:role/amplify-vinoamplify-master-230828-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::831303585030:role/amplify-vinoamplify-master-230828-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-vinoamplify-master-230828-deployment",
+            "UnauthRoleName": "amplify-vinoamplify-master-230828-unauthRole",
+            "StackName": "amplify-vinoamplify-master-230828",
+            "StackId": "arn:aws:cloudformation:us-east-1:831303585030:stack/amplify-vinoamplify-master-230828/3a52df10-63ed-11ea-939f-0ad4194c8c9d",
+            "AmplifyAppId": "d11rxy5chwcs7o"
+        },
+        "categories": {
+            "auth": {
+                "vinoamplify33e4a349": {
+                    "hostedUIProviderCreds": "[{\"ProviderName\":\"Facebook\",\"client_id\":\"649559492141498\",\"client_secret\":\"59a21ce5eacfd0858a596df4eb19cc67\"}]"
+                }
+            }
+        }
+    }
+}
