@@ -19,6 +19,8 @@ import DrawerContentComponents from '../components/navigation/drawer'
 // import Filter from '../views/filter'
 import Cellars from '../views/cellars'
 import Results from '../views/results'
+
+
 import Step_1_Open from '../views/FirstTimeOpen/Slide-1'
 import Step_2_Open from '../views/FirstTimeOpen/Slide-2'
 import Step_3_Open from '../views/FirstTimeOpen/Slide-3'
@@ -30,6 +32,11 @@ import FicheWine from '../views/ficheWine'
 import EditCellar from '../views/editCellar'
 import AddCellar from '../views/AddCellar'
 import AddWine from '../views/AddWine'
+import ChooseMethodAddWine from '../views/AddWine/ChooseMethod'
+import ScanLabelAddWine from '../views/AddWine/ScanLabel'
+import SearchDbAddWine from '../views/AddWine/SearchDb'
+
+
 import Region from '../components/options/region'
 import Country from '../components/options/country'
 import Appelation from '../components/options/appelation'
@@ -75,13 +82,14 @@ const AddWineStack = () => (
         border:'none',
       }}
       >
-    <Stack.Screen name={'add_wine'}
+    <Stack.Screen name={'choose_method'}
       options={{
         header:() => null,
-      headerTitle:'',
-    }}
-      component={AddWine} />
-    <Stack.Screen name={'set_wine'} component={Region} />
+        headerTitle:'',
+      }}
+      component={ChooseMethodAddWine} />
+    <Stack.Screen name={'scan_method'} component={ScanLabelAddWine} />
+    <Stack.Screen name={'search_db'} component={SearchDbAddWine} />
   </Stack.Navigator>
 )
 const WineListStack = () => (

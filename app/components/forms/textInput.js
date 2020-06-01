@@ -6,9 +6,9 @@ import PropTypes from 'prop-types'
 
 const TextInputComponent = ({icon,label,placeholder,value,disabled,onChange}) => {
   const inputRef = useRef()
-  const onChangeText = (text) => onChangeText(text)
+  const onChangeText = (text) => onChange(text)
   return (
-    <TouchableOpacity disabled={disabled} onPress={()=>inputRef.focus()} style={styles.touchableOpacity}>
+    <TouchableOpacity disabled={disabled} onPress={()=>inputRef.current.focus()} style={styles.touchableOpacity}>
       <View style={{flex:1}}>
         <View style={{flexDirection:'row',flexWrap:'wrap',flex:1,alignItems:'center'}}>
           {icon && <Image

@@ -176,7 +176,7 @@ const Wines = ({navigation,route}) => {
               onPress={() => navigation.push('filter')}
               active={!activeSelection}
               value={''}
-              placeholder={'Rechercher'}
+              placeholder={'Search a wine'}
               onChangeText={search => setSearch(search)}
               onClear={() => {
                 triggerResetSearch()

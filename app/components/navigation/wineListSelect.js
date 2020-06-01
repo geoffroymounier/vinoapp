@@ -30,7 +30,7 @@ const WineListSelect = ({value,onDeselectAll,navigation,params = {}}) => {
     <Layout>
 
       <View style={{...styles.container}}>
-        <View style={{...styles.container,flex:1}}>
+        {/* <View style={{...styles.container,flex:1}}>
 
         <TouchableOpacity
           // onPress={onPress}
@@ -71,7 +71,7 @@ const WineListSelect = ({value,onDeselectAll,navigation,params = {}}) => {
           />
           }
         </TouchableOpacity>
-      </View>
+      </View> */}
         {/* <TouchableOpacity
           style={styles.container}
           onPress={() => navigation.setParams({activeSelection:false})}

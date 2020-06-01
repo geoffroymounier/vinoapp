@@ -8,27 +8,28 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* vinoamplifyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* vinoamplifyTests.m */; };
+		010751E70A7E4F00894C4B1E /* Proxima Nova Alt Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = D22B28C2877B4DB4A9212C8D /* Proxima Nova Alt Light.otf */; };
 		0A431D01A8A084B1E7389F8B /* libPods-vinoamplifyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D9D8497083BF1CE3C7EC4247 /* libPods-vinoamplifyTests.a */; };
+		121BD3470930414992A9E42F /* ProximaNova-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = D134599F894E4FBE8554E07E /* ProximaNova-Regular.otf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		2718122B57BE491CABAFDFEE /* ProximaNova-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1801559828349F3B65F6406 /* ProximaNova-Semibold.otf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2D1EE44A209DF349100D0A2B /* libPods-vinoamplify-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 051AEC49FCF470E0E83570C7 /* libPods-vinoamplify-tvOSTests.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* vinoamplifyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* vinoamplifyTests.m */; };
-		6A7EFB9BEF0DE66C10C731A2 /* libPods-vinoamplify-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B662121846DCEA9DB2758B /* libPods-vinoamplify-tvOS.a */; };
-		86FB8F519FB963EBA9672430 /* libPods-vinoamplify.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 31120CA5953F6D4A1E0F1C4C /* libPods-vinoamplify.a */; };
-		523B5CE579B24A58BD385932 /* Proxima Nova Alt Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7F20CADA210240D8BB3C97E6 /* Proxima Nova Alt Bold.otf */; };
-		010751E70A7E4F00894C4B1E /* Proxima Nova Alt Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = D22B28C2877B4DB4A9212C8D /* Proxima Nova Alt Light.otf */; };
 		35B71625679B4BDE970783E4 /* Proxima Nova Alt Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = D2B64D38B8234407972D35C2 /* Proxima Nova Alt Thin.otf */; };
 		435D68EA570341D0974AAFC6 /* Proxima Nova Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 161570BA591F40A6BA502D09 /* Proxima Nova Black.otf */; };
-		F16DEDB0043848C2AAC9441C /* Proxima Nova Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 730DD3A976EB4872B0F94C48 /* Proxima Nova Bold.otf */; };
-		8ADA5F2CCAEE44F3BE6AC97B /* Proxima Nova Extrabold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 86F6295ED3134ACE94959591 /* Proxima Nova Extrabold.otf */; };
 		509535F2715B4ADCB8B853AD /* Proxima Nova Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 27A46187C6574FF3A3D37020 /* Proxima Nova Thin.otf */; };
-		121BD3470930414992A9E42F /* ProximaNova-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = D134599F894E4FBE8554E07E /* ProximaNova-Regular.otf */; };
-		2718122B57BE491CABAFDFEE /* ProximaNova-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1801559828349F3B65F6406 /* ProximaNova-Semibold.otf */; };
+		523B5CE579B24A58BD385932 /* Proxima Nova Alt Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7F20CADA210240D8BB3C97E6 /* Proxima Nova Alt Bold.otf */; };
+		6A7EFB9BEF0DE66C10C731A2 /* libPods-vinoamplify-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B662121846DCEA9DB2758B /* libPods-vinoamplify-tvOS.a */; };
+		86FB8F519FB963EBA9672430 /* libPods-vinoamplify.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 31120CA5953F6D4A1E0F1C4C /* libPods-vinoamplify.a */; };
+		8ADA5F2CCAEE44F3BE6AC97B /* Proxima Nova Extrabold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 86F6295ED3134ACE94959591 /* Proxima Nova Extrabold.otf */; };
+		8E30B9922446152700467BDE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8E30B9912446152700467BDE /* GoogleService-Info.plist */; };
+		F16DEDB0043848C2AAC9441C /* Proxima Nova Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 730DD3A976EB4872B0F94C48 /* Proxima Nova Bold.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,8 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = vinoamplify/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = vinoamplify/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = vinoamplify/main.m; sourceTree = "<group>"; };
+		161570BA591F40A6BA502D09 /* Proxima Nova Black.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Proxima Nova Black.otf"; path = "../app/assets/fonts/Proxima Nova Black.otf"; sourceTree = "<group>"; };
+		27A46187C6574FF3A3D37020 /* Proxima Nova Thin.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Proxima Nova Thin.otf"; path = "../app/assets/fonts/Proxima Nova Thin.otf"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* vinoamplify-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "vinoamplify-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* vinoamplify-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "vinoamplify-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		31120CA5953F6D4A1E0F1C4C /* libPods-vinoamplify.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-vinoamplify.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -68,23 +71,22 @@
 		582B4BAD22E94932FCDAE88C /* Pods-vinoamplify-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vinoamplify-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-vinoamplify-tvOSTests/Pods-vinoamplify-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		5AFFC0C9A5B1B09FAD10409E /* Pods-vinoamplify-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vinoamplify-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-vinoamplify-tvOSTests/Pods-vinoamplify-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6CD3D23032470D7274CF832D /* Pods-vinoamplify-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vinoamplify-tvOS.release.xcconfig"; path = "Target Support Files/Pods-vinoamplify-tvOS/Pods-vinoamplify-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		730DD3A976EB4872B0F94C48 /* Proxima Nova Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Proxima Nova Bold.otf"; path = "../app/assets/fonts/Proxima Nova Bold.otf"; sourceTree = "<group>"; };
+		7F20CADA210240D8BB3C97E6 /* Proxima Nova Alt Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Proxima Nova Alt Bold.otf"; path = "../app/assets/fonts/Proxima Nova Alt Bold.otf"; sourceTree = "<group>"; };
+		86F6295ED3134ACE94959591 /* Proxima Nova Extrabold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Proxima Nova Extrabold.otf"; path = "../app/assets/fonts/Proxima Nova Extrabold.otf"; sourceTree = "<group>"; };
 		8BA9BE4D823D6EFC7A52D447 /* Pods-vinoamplifyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vinoamplifyTests.debug.xcconfig"; path = "Target Support Files/Pods-vinoamplifyTests/Pods-vinoamplifyTests.debug.xcconfig"; sourceTree = "<group>"; };
+		8E30B9912446152700467BDE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		91C8A6445BC29B89905612F2 /* Pods-vinoamplify.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vinoamplify.debug.xcconfig"; path = "Target Support Files/Pods-vinoamplify/Pods-vinoamplify.debug.xcconfig"; sourceTree = "<group>"; };
 		944878706FFC5D677EFE280E /* Pods-vinoamplify.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vinoamplify.release.xcconfig"; path = "Target Support Files/Pods-vinoamplify/Pods-vinoamplify.release.xcconfig"; sourceTree = "<group>"; };
 		9DAD424890F044D0F4559F2E /* Pods-vinoamplifyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vinoamplifyTests.release.xcconfig"; path = "Target Support Files/Pods-vinoamplifyTests/Pods-vinoamplifyTests.release.xcconfig"; sourceTree = "<group>"; };
 		CE984E4279121DE883B99A2B /* Pods-vinoamplify-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vinoamplify-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-vinoamplify-tvOS/Pods-vinoamplify-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		D134599F894E4FBE8554E07E /* ProximaNova-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "ProximaNova-Regular.otf"; path = "../app/assets/fonts/ProximaNova-Regular.otf"; sourceTree = "<group>"; };
+		D22B28C2877B4DB4A9212C8D /* Proxima Nova Alt Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Proxima Nova Alt Light.otf"; path = "../app/assets/fonts/Proxima Nova Alt Light.otf"; sourceTree = "<group>"; };
+		D2B64D38B8234407972D35C2 /* Proxima Nova Alt Thin.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Proxima Nova Alt Thin.otf"; path = "../app/assets/fonts/Proxima Nova Alt Thin.otf"; sourceTree = "<group>"; };
 		D9D8497083BF1CE3C7EC4247 /* libPods-vinoamplifyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-vinoamplifyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		7F20CADA210240D8BB3C97E6 /* Proxima Nova Alt Bold.otf */ = {isa = PBXFileReference; name = "Proxima Nova Alt Bold.otf"; path = "../app/assets/fonts/Proxima Nova Alt Bold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		D22B28C2877B4DB4A9212C8D /* Proxima Nova Alt Light.otf */ = {isa = PBXFileReference; name = "Proxima Nova Alt Light.otf"; path = "../app/assets/fonts/Proxima Nova Alt Light.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		D2B64D38B8234407972D35C2 /* Proxima Nova Alt Thin.otf */ = {isa = PBXFileReference; name = "Proxima Nova Alt Thin.otf"; path = "../app/assets/fonts/Proxima Nova Alt Thin.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		161570BA591F40A6BA502D09 /* Proxima Nova Black.otf */ = {isa = PBXFileReference; name = "Proxima Nova Black.otf"; path = "../app/assets/fonts/Proxima Nova Black.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		730DD3A976EB4872B0F94C48 /* Proxima Nova Bold.otf */ = {isa = PBXFileReference; name = "Proxima Nova Bold.otf"; path = "../app/assets/fonts/Proxima Nova Bold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		86F6295ED3134ACE94959591 /* Proxima Nova Extrabold.otf */ = {isa = PBXFileReference; name = "Proxima Nova Extrabold.otf"; path = "../app/assets/fonts/Proxima Nova Extrabold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		27A46187C6574FF3A3D37020 /* Proxima Nova Thin.otf */ = {isa = PBXFileReference; name = "Proxima Nova Thin.otf"; path = "../app/assets/fonts/Proxima Nova Thin.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		D134599F894E4FBE8554E07E /* ProximaNova-Regular.otf */ = {isa = PBXFileReference; name = "ProximaNova-Regular.otf"; path = "../app/assets/fonts/ProximaNova-Regular.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		F1801559828349F3B65F6406 /* ProximaNova-Semibold.otf */ = {isa = PBXFileReference; name = "ProximaNova-Semibold.otf"; path = "../app/assets/fonts/ProximaNova-Semibold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F1801559828349F3B65F6406 /* ProximaNova-Semibold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "ProximaNova-Semibold.otf"; path = "../app/assets/fonts/ProximaNova-Semibold.otf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +145,7 @@
 		13B07FAE1A68108700A75B9A /* vinoamplify */ = {
 			isa = PBXGroup;
 			children = (
+				8E30B9912446152700467BDE /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -165,6 +168,22 @@
 				D9D8497083BF1CE3C7EC4247 /* libPods-vinoamplifyTests.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		45985653EC8D442AB510557B /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				7F20CADA210240D8BB3C97E6 /* Proxima Nova Alt Bold.otf */,
+				D22B28C2877B4DB4A9212C8D /* Proxima Nova Alt Light.otf */,
+				D2B64D38B8234407972D35C2 /* Proxima Nova Alt Thin.otf */,
+				161570BA591F40A6BA502D09 /* Proxima Nova Black.otf */,
+				730DD3A976EB4872B0F94C48 /* Proxima Nova Bold.otf */,
+				86F6295ED3134ACE94959591 /* Proxima Nova Extrabold.otf */,
+				27A46187C6574FF3A3D37020 /* Proxima Nova Thin.otf */,
+				D134599F894E4FBE8554E07E /* ProximaNova-Regular.otf */,
+				F1801559828349F3B65F6406 /* ProximaNova-Semibold.otf */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		62C70FA6E59F7FEBEFACB253 /* Pods */ = {
@@ -216,23 +235,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		45985653EC8D442AB510557B /* Resources */ = {
-			isa = "PBXGroup";
-			children = (
-				7F20CADA210240D8BB3C97E6 /* Proxima Nova Alt Bold.otf */,
-				D22B28C2877B4DB4A9212C8D /* Proxima Nova Alt Light.otf */,
-				D2B64D38B8234407972D35C2 /* Proxima Nova Alt Thin.otf */,
-				161570BA591F40A6BA502D09 /* Proxima Nova Black.otf */,
-				730DD3A976EB4872B0F94C48 /* Proxima Nova Bold.otf */,
-				86F6295ED3134ACE94959591 /* Proxima Nova Extrabold.otf */,
-				27A46187C6574FF3A3D37020 /* Proxima Nova Thin.otf */,
-				D134599F894E4FBE8554E07E /* ProximaNova-Regular.otf */,
-				F1801559828349F3B65F6406 /* ProximaNova-Semibold.otf */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-			path = "";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -265,6 +267,7 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				3DEE61DECF210FD3C5F6986E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -325,10 +328,15 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = QTU9R32TQZ;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
+					};
+					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = QTU9R32TQZ;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 37X8JR2Q7Q;
 						ProvisioningStyle = Automatic;
 					};
 					2D02E48F1E0B4A5D006451C7 = {
@@ -377,6 +385,7 @@
 				523B5CE579B24A58BD385932 /* Proxima Nova Alt Bold.otf in Resources */,
 				010751E70A7E4F00894C4B1E /* Proxima Nova Alt Light.otf in Resources */,
 				35B71625679B4BDE970783E4 /* Proxima Nova Alt Thin.otf in Resources */,
+				8E30B9922446152700467BDE /* GoogleService-Info.plist in Resources */,
 				435D68EA570341D0974AAFC6 /* Proxima Nova Black.otf in Resources */,
 				F16DEDB0043848C2AAC9441C /* Proxima Nova Bold.otf in Resources */,
 				8ADA5F2CCAEE44F3BE6AC97B /* Proxima Nova Extrabold.otf in Resources */,
@@ -431,6 +440,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+		};
+		3DEE61DECF210FD3C5F6986E /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-vinoamplify/Pods-vinoamplify-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseMLVisionTextModel/GoogleMVTextDetectorResources.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMVTextDetectorResources.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-vinoamplify/Pods-vinoamplify-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		5CCBFBCD8E7B65BEC6B4716F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -628,6 +655,7 @@
 			baseConfigurationReference = 8BA9BE4D823D6EFC7A52D447 /* Pods-vinoamplifyTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = QTU9R32TQZ;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -652,6 +680,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = QTU9R32TQZ;
 				INFOPLIST_FILE = vinoamplifyTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -673,6 +702,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = QTU9R32TQZ;
 				INFOPLIST_FILE = vinoamplify/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -680,7 +710,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.mkm.vinoamplify;
+				PRODUCT_BUNDLE_IDENTIFIER = org.mkm.vinologie;
 				PRODUCT_NAME = vinoamplify;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -692,6 +722,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = QTU9R32TQZ;
 				INFOPLIST_FILE = vinoamplify/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -699,7 +730,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.mkm.vinoamplify;
+				PRODUCT_BUNDLE_IDENTIFIER = org.mkm.vinologie;
 				PRODUCT_NAME = vinoamplify;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -715,7 +746,10 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 37X8JR2Q7Q;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "vinoamplify-tvOS/Info.plist";
@@ -725,8 +759,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.vinoamplify-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = org.mkm.vinologie;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.2;
@@ -743,8 +778,11 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 37X8JR2Q7Q;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "vinoamplify-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -753,8 +791,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.vinoamplify-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = org.mkm.vinologie;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.2;

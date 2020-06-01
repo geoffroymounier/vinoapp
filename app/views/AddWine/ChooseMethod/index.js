@@ -13,12 +13,12 @@ const AddCellar = ({navigation}) => {
   const dispatch = useDispatch()
   const [cellar,setCellar] = useState({})
   const triggerSaveCellar = (cellar,id) => dispatch(saveCellar(cellar,id))
-  const goBack = () => navigation.goBack()
-  const checkSave = () => {
-      navigation.push('set_wine')
-      // triggerSaveCellar({...cellar},null)
-      //
+  const goBack = () => {
+    // navigation.popToTop();
+    navigation.goBack('wines');
   }
+  const scanLabel = () => navigation.push('scan_method')
+  const searchLabel = () => navigation.push('search_db')
   useEffect(()=>{
     navigation.setOptions({
     //   header :() => (
@@ -47,10 +47,10 @@ const AddCellar = ({navigation}) => {
     return (
       <SafeAreaView style={{flex:1,justifyContent:'center'}}>
       <BlurView
-      style={styles.absolute}
-      blurType="regular"
-      reducedTransparencyFallbackColor="white"
-    />
+        style={styles.absolute}
+        blurType="regular"
+        reducedTransparencyFallbackColor="white"
+      />
       <TouchableOpacity activeOpacity={1} onPress={()=>Keyboard.dismiss()} style={{flex:1,justifyContent:'center'}}>
 
           <View style={{justifyContent:'center',flex:1,width,borderRadius:20}}>
@@ -58,17 +58,17 @@ const AddCellar = ({navigation}) => {
 
                 <DefaultButton
                   label={"New Wine From Database"}
-                  onPress={checkSave}
+                  onPress={searchLabel}
                   styleContainer={{width:"80%",height:50}}
                 />
                 <DefaultButton
                   label={"New Wine From Label Scan"}
-                  onPress={checkSave}
+                  onPress={scanLabel}
                   styleContainer={{width:"80%",height:50}}
                 />
                 <DefaultButton
                   label={"Add a tasting note"}
-                  onPress={checkSave}
+                  onPress={searchLabel}
                   styleContainer={{width:"80%",height:50}}
                 />
 

@@ -6,27 +6,33 @@ class CustomMarker extends React.Component {
   render() {
     return (
       <View
-        style={{...styles.image}}
-      ><Text style={{fontSize:12,color : !this.props.active ? 'lightgray' : void 0}}>{this.props.currentValue}{this.props.suffix}</Text></View>
+        style={{...styles.bigEllipse}}
+      >
+      <View
+        style={{...styles.smallEllipse}}
+      ></View>
+      </View>
 
     );
   }
 }
 
 const styles = StyleSheet.create({
-  image: {
-    height: 36,
-    width: 36,
-    borderRadius:18,
+  bigEllipse: {
+    height: 13,
+    width: 13,
+    borderRadius:13,
     justifyContent:'center',
     alignItems:'center',
-    shadowColor: "darkgray",
-    shadowOpacity: 0.7,
-    shadowRadius: 2,shadowOffset: {
-    height: 1,
-    width:1,
-  }, backgroundColor:'#FEFDF8'
-
+    backgroundColor:'#C4C4C4'
+  },
+  smallEllipse: {
+    height: 5,
+    width: 5,
+    borderRadius:5,
+    justifyContent:'center',
+    alignItems:'center',
+    backgroundColor:'#3B3B3D'
   },
 });
 

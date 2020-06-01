@@ -3,8 +3,10 @@ import {getCredentials,resetKeychain,rememberEmailPassword} from './keychainFunc
 import NavigationService from './navigationService'
 import { Auth, API } from 'aws-amplify';
 import moment from 'moment'
+import axios from 'axios'
 import io from 'socket.io-client';
-const URL =  "https://4a1dcqoynj.execute-api.us-east-1.amazonaws.com/prod"
+
+const URL =  "https://api.vinologie.ovh"
 // const URL = "http://localhost:3000/api"
 let token="";
 let accessToken = "";
@@ -13,18 +15,32 @@ function deleteToken(){
   token=""; //lol
   return
 }
+function searchWineBase(wine) {
+  return new Promise((resolve,reject) => {
+    const URLDB = `https://api.globalwinescore.com/globalwinescores/latest?wine=${encodeURIComponent(wine)}`
 
+    const options = {
+  method: 'GET',
+  headers: { 'content-type': 'application/json', "Authorization": "Token db8794b625ac276302a401f7d826d57b169721c1" },
+  url:URLDB,
+};
+    axios(options).then(async function (res){
+      console.log(res.status)
+        const result = await res.json()
+        resolve(result)
+    }).catch(e => reject(e))
+  })
+
+}
 function textSearch(query = {}){
-  return function(dispatch) {
-    return new Promise(async function(resolve,reject){
-      fetchData("GET","/textSearch/",query)
+    return new Promise((resolve,reject) => {
+      fetchData("GET","/admin-wines",query)
       .then(array=>{
-        dispatch(setResults(array))
-        resolve();
+        console.log({array})
+        resolve(array);
       })
       .catch(e=>reject(e))
     })
-  }
 }
 function fetchSearch(query = {}){
   return function(dispatch) {
@@ -324,7 +340,6 @@ function fetchData( method, path, params, body){
           break;
       }
     }).then(json=>{
-      console.log({json})
       resolve(json)
     })
     .catch(e=>{
@@ -336,4 +351,4 @@ function fetchData( method, path, params, body){
   })//end promise
 }
 //
-export {askForConfirmation,resetPass,fetchCredentials,logOutUser,moveWines,deleteCellar,deleteWine,textSearch,fetchSearch,fetchCellars,fetchData, login,getUser,saveCellar,saveWine,fetchWines}
+export {searchWineBase,askForConfirmation,resetPass,fetchCredentials,logOutUser,moveWines,deleteCellar,deleteWine,textSearch,fetchSearch,fetchCellars,fetchData, login,getUser,saveCellar,saveWine,fetchWines}

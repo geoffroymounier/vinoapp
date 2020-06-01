@@ -10,6 +10,7 @@ const FilterLabels = ({
   borderColor,
   activeTextColor,
   value,
+  image,
   onPress,
   active,
   disabled,
@@ -23,12 +24,11 @@ const FilterLabels = ({
         backgroundColor:active ? activeBackgroundColor : backgroundColor,
         flexDirection:'row',
         alignItems:'center',
-        borderRadius:5,
-        borderWidth:1,
-        borderColor:active ? activeBorderColor : borderColor,
-        margin:3,
+        borderBottomWidth:2.5,
+        borderBottomColor:active ? activeBorderColor : borderColor,
         ...styleContainer
       }} >
+        {image && image}
         <Text style={{
           color:active ? activeTextColor : textColor,
           paddingVertical:5,
@@ -46,6 +46,7 @@ FilterLabels.propTypes = {
   activeBorderColor:PropTypes.string,
   borderColor:PropTypes.string,
   value:PropTypes.string.isRequired,
+  image:PropTypes.object,
   onPress:PropTypes.func,
   disabled:PropTypes.bool,
   active:PropTypes.bool.isRequired,
@@ -54,8 +55,9 @@ FilterLabels.propTypes = {
 }
 FilterLabels.defaultProps = {
   backgroundColor:'none',
-  activeBackgroundColor:'gray',
+  activeBackgroundColor:'none',
   textColor:'auto',
+  image:null,
   activeTextColor:'auto',
   activeBorderColor:'blue',
   borderColor:'none',
