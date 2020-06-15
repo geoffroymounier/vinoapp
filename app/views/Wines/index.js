@@ -222,7 +222,7 @@ const Wines = ({navigation,route}) => {
             }
           />
         </View>
-        <ActionButton navigation={navigation} />
+        {/* <ActionButton navigation={navigation} /> */}
       </View>
     );
 }

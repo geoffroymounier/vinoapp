@@ -17,6 +17,10 @@ import Meal from './meal'
 import Romantic from './romantic'
 import Party from './party'
 import Summer from './summer'
+import Checked from './checked'
+import France from './france'
+import Italy from './italy'
+import Spain from './spain'
 
 
 
@@ -39,6 +43,10 @@ const svgs = {
   meal: Meal,
   romantic: Romantic,
   party: Party,
-  summer: Summer
+  summer: Summer,
+  checked: Checked,
+  france : France,
+  italy : Italy,
+  spain : Spain
 }
 export default svgs

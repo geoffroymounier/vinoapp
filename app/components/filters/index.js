@@ -3,8 +3,13 @@ import PropTypes from 'prop-types'
 import {ScrollView,StyleSheet} from 'react-native';
 import FilterLabels from 'components/thumbnails/filterLabels';
 import Icon from 'components/thumbnails/icon';
-import ActiveComponent from 'components/forms/image'
+import Pairing from './pairing'
+import Region from './region'
 import Occasions from './occasions'
+import Grape from './grape'
+import Maturity from './maturity'
+import ActiveComponent from './occasions'
+
 const otherFilters = [
   {
     key : 'occasion',
@@ -16,25 +21,25 @@ const otherFilters = [
     key : 'pairing',
     title : 'Pairing',
     icon:'pairing',
-    activeComponent : ActiveComponent
+    activeComponent : Pairing
   },
   {
     key : 'region',
     title : 'Country & Region',
     icon:'region',
-    activeComponent : ActiveComponent
+    activeComponent : Region
   },
   {
     key : 'grape',
     title : 'Grape',
     icon:'grape',
-    activeComponent : ActiveComponent
+    activeComponent : Grape
   },
   {
     key : 'maturity',
     title : 'Maturity',
     icon:'maturity',
-    activeComponent : ActiveComponent
+    activeComponent : Maturity
   },
   {
     key : 'vintage',
@@ -51,8 +56,9 @@ const otherFilters = [
 
 ]
 
-const Filters = () => {
-  const Component = otherFilters[0].activeComponent
+const Filters = ({open,onTouch}) => {
+  const Component = open > -1 ? otherFilters[open].activeComponent : null
+
   return (
     <>
     <ScrollView horizontal style={{marginTop:8}}>
@@ -62,17 +68,18 @@ const Filters = () => {
           image={<Icon name={e.icon} width={35} height={25}/>}
           value={e.title}
           disabled={false}
-          active={i===0}
+          active={i===open}
           backgroundColor={'transparent'}
           borderColor={'transparent'}
           activeBorderColor={'#3B3B3D'}
+          onPress={() => i === open ? onTouch(-1) : onTouch(i)}
           style={{...styles.title,fontSize:12,paddingHorizontal:0,textAlign:'center'}}
           styleContainer={{width:65,flexDirection:'column'}}
         />
       )
     )}
     </ScrollView>
-    <Component />
+    {open > -1 && <Component />}
     </>
   )
 }
