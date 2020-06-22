@@ -40,7 +40,7 @@ const Pairing = ({
     dispatch(setSearch({['pairings']:[...new Set([...newPairing])]})) // remove doublons
   }
 
-  const unNestArray = (item) => {
+  const unNestArray = (item) => { // create an array of all the categories we are coming from => recursive
     const matchItem = pairingArray.find(e => e.key === item) || {}
     if (!!matchItem.type) {
       return [...unNestArray(matchItem.referrer[0]),matchItem]
