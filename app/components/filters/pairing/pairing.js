@@ -2,12 +2,12 @@ const pairing = [
   {
     "key": "appetizer",
     "title": "Appetizer",
-    "image": require("assets/meat.png")
+    "image": require("assets/appetizer.png")
   },
   {
     "key": "starter",
     "title": "Starter",
-    "image": require("assets/meat.png")
+    "image": require("assets/starter.png")
   },
   {
     "key": "meat",
@@ -17,12 +17,12 @@ const pairing = [
   {
     "key": "fish",
     "title": "Fish",
-    "image": require("assets/meat.png")
+    "image": require("assets/fish.png")
   },
   {
     "key": "seafood",
     "title": "Seafood",
-    "image": require("assets/meat.png")
+    "image": require("assets/seafood.png")
   },
   {
     "key": "veggie",
@@ -32,24 +32,24 @@ const pairing = [
   {
     "key": "ricepasta",
     "title": "Rice & Pasta",
-    "image": require("assets/meat.png")
+    "image": require("assets/rice.png")
   },
   {
     "key": "cheese",
     "title": "Cheese",
-    "image": require("assets/meat.png")
+    "image": require("assets/cheese.png")
   },
   {
     "key": "dessert",
     "title": "Dessert",
-    "image": require("assets/meat.png")
+    "image": require("assets/dessert.png")
   },
   {
     "title": "beef",
     "key":"beef",
     "type":"type",
     "referrer": ["meat"],
-    "image": require("assets/meat.png")
+    "image": require("assets/beef.jpg")
   },
   {
     "title": "game",
@@ -63,28 +63,28 @@ const pairing = [
     "key":"lamb",
     "type":"type",
     "referrer": ["meat"],
-    "image": require("assets/meat.png")
+    "image": require("assets/lamb.jpg")
   },
   {
     "title": "offal",
     "key":"offal",
     "type":"type",
     "referrer": ["meat"],
-    "image": require("assets/meat.png")
+    "image": require("assets/offal.jpg")
   },
   {
     "title": "pork",
     "key":"pork",
     "type":"type",
     "referrer": ["meat"],
-    "image": require("assets/meat.png")
+    "image": require("assets/pork.jpg")
   },
   {
     "title": "poultry",
     "key":"poultry",
     "type":"type",
     "referrer": ["meat"],
-    "image": require("assets/meat.png")
+    "image": require("assets/roastedPoultry.jpg")
   },
   {
     "title": "rabbit",
@@ -121,7 +121,7 @@ const pairing = [
     "type":"cook",
     "referrer": ["beef","game","lamb","offal","pork","rabbit","sheep","veal","poultry"],
     "title":"grilled",
-    "image": require("assets/meat.png")
+    "image": require("assets/grilledbeef.jpg")
   },
   {
     "key":"roastedMeat",
@@ -130,6 +130,14 @@ const pairing = [
     "referrer": ["beef","game","lamb","offal","pork","rabbit","sheep","veal","poultry"],
     "title":"roasted",
     "image": require("assets/meat.png")
+  },
+  {
+    "key":"roastedPoultry",
+    "value": "roasted",
+    "type":"cook",
+    "referrer": ["poultry"],
+    "title":"roasted",
+    "image": require("assets/roastedChicken.jpeg")
   },
   {
     "key":"stewedMeat",
@@ -145,7 +153,7 @@ const pairing = [
     "type":"cook",
     "referrer": ["beef","game","lamb","offal","pork","rabbit","sheep","veal","poultry","fish","seafood"],
     "title":"cream / butter sauce",
-    "image": require("assets/meat.png")
+    "image": require("assets/creamsauce.jpg")
   },
   {
     "key":"redSauceMeat",
@@ -185,7 +193,7 @@ const pairing = [
     "key":"grilledFish",
     "type":"cook",
     "referrer":["fish"],
-    "image": require("assets/meat.png")
+    "image": require("assets/grilledfish.jpg")
   },
   {
     "title":"baked",
@@ -217,7 +225,7 @@ const pairing = [
     "key":"grilledSeaFood",
     "type":"cook",
     "referrer":["seafood"],
-    "image": require("assets/meat.png")
+    "image": require("assets/grilledseafood.jpeg")
   },
   {
     "title":"baked",
@@ -273,7 +281,7 @@ const pairing = [
     "value":"crackers",
     "type":"type",
     "referrer":["appetizer"],
-    "image": require("assets/meat.png")
+    "image": require("assets/crackers.jpg")
   },
   {
     "key":"quicheAppetizer",
@@ -313,7 +321,7 @@ const pairing = [
     "value":"green",
     "type":"type",
     "referrer":["veggie"],
-    "image": require("assets/meat.png")
+    "image": require("assets/greenveggetables.jpg")
   },
   {
     "key":"southernvegetables",
