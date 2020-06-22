@@ -1,1 +1,4 @@
-{"name": "components"}
+{
+  "name": "components",
+  "moduleRoots": [ "app/components" ]
+}
