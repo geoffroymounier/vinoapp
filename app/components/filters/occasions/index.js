@@ -1,10 +1,12 @@
 import React from 'react'
 import {Text,TouchableOpacity,View,Dimensions} from 'react-native';
+import {useDispatch,useSelector} from 'react-redux'
+import {setSearch} from 'reduxStore/actions'
 import Icon from 'components/thumbnails/icon';
 import PropTypes from 'prop-types'
 const {width,height} = Dimensions.get('window')
 
-const occasions = [
+const occasionsArray = [
   {
     key : 'party',
     title : 'Party',
@@ -63,11 +65,20 @@ const Occasions = ({
     borderColor,
     activeTextColor,
     onPress,
-    active,
     disabled,
     styleContainer,
     style
   }) => {
+  const occasions = useSelector(state => state.search.occasions) || []
+  const dispatch = useDispatch()
+  const toggleItem = (e) => {
+    const index = occasions.findIndex(occ => occ === e.key)
+    if (index === -1) {
+      dispatch(setSearch({['occasions'] :[...occasions,e.key]}))
+    } else {
+      dispatch(setSearch({['occasions'] :[...occasions].filter((_,i) => i !== index)}))
+    }
+  }
   return (
     <View style={{
       flexDirection:'row',
@@ -77,12 +88,17 @@ const Occasions = ({
       marginVertical: 15
     }}
     >
-    {occasions.map(e => {
+    {occasionsArray.map(e => {
+
+      const isActive = occasions.findIndex(occ => occ === e.key) > -1
+      const onPress = () => toggleItem(e)
+
       return (
         <TouchableOpacity
+          key={e.key}
           onPress={onPress}
           style={{
-            backgroundColor:active ? activeBackgroundColor : backgroundColor,
+            backgroundColor:!!isActive ? activeBackgroundColor : backgroundColor,
             alignItems:'center',
             height:75,
             width:0.20*width - 5,
@@ -96,11 +112,11 @@ const Occasions = ({
               alignItems:'center',
               justifyContent:'center',
               borderRadius:200,
-              borderColor:active ? '#CACACA' : "#CACACA",
+              borderColor:isActive ? '#CACACA' : "#CACACA",
             }}><Icon name={e.icon} width={35} height={25} /></View>
             }
             <Text style={{
-              color:active ? activeTextColor : textColor,
+              color:isActive ? activeTextColor : textColor,
               paddingVertical:5,
               textAlign:'center',
               fontSize:12,
@@ -130,11 +146,11 @@ Occasions.propTypes = {
   style:PropTypes.obj
 }
 Occasions.defaultProps = {
-  backgroundColor:'none',
-  activeBackgroundColor:'none',
+  backgroundColor:'transparent',
+  activeBackgroundColor:'blue',
   textColor:'auto',
   image:null,
-  activeTextColor:'auto',
+  activeTextColor:'red',
   activeBorderColor:'blue',
   borderColor:'none',
   disabled:true,

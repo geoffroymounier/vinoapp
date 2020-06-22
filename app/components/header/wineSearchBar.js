@@ -2,6 +2,9 @@ import React, {useRef,useMemo, useState} from 'react';
 import PropTypes from 'prop-types'
 import {View,StyleSheet,Text,ScrollView,Animated,TouchableOpacity,Dimensions} from 'react-native';
 import Filters from 'components/filters';
+import Colors from 'components/filters/colors';
+import Typologies from 'components/filters/typologies';
+import SearchInput from 'components/filters/textSearch'
 import MultiSlider from '@ptomasroos/react-native-multi-slider'
 import CustomMarker from 'components/markers/customMarker'
 import ActiveComponent from 'components/forms/image'
@@ -59,42 +62,7 @@ const WineSearchBar = ({onPress,value,placeholder,onClear,active}) => {
   return (
     <Animated.View style={{overflow:'hidden',width,maxHeight:heightValue,position:'absolute',backgroundColor:'white',zIndex:10}}>
     <Animated.View style={{overflow:'hidden',maxHeight:heightOpen}}>
-      <TouchableOpacity
-        onPress={onPress}
-        style={{
-          flexDirection : 'row',
-          alignItems:'center',
-          height:28,
-          marginTop:11,
-          marginHorizontal:10,
-          marginBottom:15,
-          borderWidth: 0.4,
-          borderColor: "#787882",
-          borderRadius:15
-        }}
-        >
-        <Icon
-          height={20}
-          width={20}
-          styleContainer={{
-            marginHorizontal:11
-          }}
-          name={'search'}
-        />
-        <Text
-          style={styles.title}
-          >{value || placeholder}
-        </Text>
-        {!!value  &&
-            <Image
-              onPress={clearSearch}
-              height={16}
-              width={16}
-              disabled={false}
-              source={times}
-            />
-          }
-      </TouchableOpacity>
+      <SearchInput value={value} placeholder={placeholder} clearSearch={clearSearch}/>
     </Animated.View>
     <ScrollView style={{marginBottom:50}} nestedScrollEnabled={true}>
       <Animated.View style={{overflow:'hidden',maxHeight:heightOpen}}>
@@ -105,43 +73,10 @@ const WineSearchBar = ({onPress,value,placeholder,onClear,active}) => {
             marginHorizontal:10
           }}>
           <View style={{flex:1,maxWidth:0.45*width}}>
-            <Text style={styles.categoryTitle}>Color</Text>
-            <View style={{
-              flexDirection:'row',
-              justifyContent:'space-between',
-              marginHorizontal: 8,
-              marginVertical: 10
-            }}>
-              <TouchableOpacity style={{alignItems:'center'}}>
-                <View style={{backgroundColor:'#DC0101', width:25,height:25,borderRadius:25,marginBottom:5}}/>
-                <Text style={styles.title}>Red</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity style={{alignItems:'center'}}>
-                <View style={{backgroundColor:'#FF8C85', width:25,height:25,borderRadius:25,marginBottom:5}}/>
-                <Text style={styles.title}>Rosé</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity style={{alignItems:'center'}}>
-                <View style={{backgroundColor:'#FFFB97', width:25,height:25,borderRadius:25,marginBottom:5}}/>
-                <Text style={styles.title}>White</Text>
-              </TouchableOpacity>
-            </View>
+            <Colors />
           </View>
           <View style={{marginRight:30}}>
-            <Text style={styles.categoryTitle}>Style</Text>
-            <View style={{
-              marginVertical: 10
-            }}>
-              <TouchableOpacity style={{alignItems:'center',flexDirection:'row'}}>
-                <Icon width={25} height={25} name={'still'} styleContainer={{marginRight:17}} />
-                <Text style={styles.title}>Still</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={{alignItems:'center',flexDirection:'row',marginTop:11}}>
-                <Icon width={25} height={25} name={'sparkling'} styleContainer={{marginRight:17}} />
-                <Text style={styles.title}>Sparkling</Text>
-              </TouchableOpacity>
-            </View>
+            <Typologies />
           </View>
         </View>
         <View

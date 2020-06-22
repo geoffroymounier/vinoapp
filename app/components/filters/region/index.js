@@ -3,6 +3,8 @@ import {Text,ScrollView,TouchableOpacity,View,Dimensions,Image,StyleSheet,TextIn
 import Button from 'components/buttons/defaultButton';
 import DefaultListItem from 'components/listItems/defaultListItem'
 import Icon from 'components/thumbnails/icon';
+import {useDispatch,useSelector} from 'react-redux'
+import {setSearch} from 'reduxStore/actions'
 import raw from 'components/array/raw'
 import PropTypes from 'prop-types'
 const {width,height} = Dimensions.get('window')
@@ -40,7 +42,19 @@ const Region = ({
     styleContainer,
     style
   }) => {
-  const [active,setActive] = useState([])
+
+  const {region = [],country = [],appelation = []} = useSelector(state => state.search)
+  const location = {region,country,appelation}
+  const dispatch = useDispatch()
+  const toggleItem = (e) => {
+    const index = location[active.label].findIndex(loc => loc === e.title)
+    if (index === -1) {
+      dispatch(setSearch({[active.label] :[...location[active.label],e.title]}))
+    } else {
+      dispatch(setSearch({[active.label] :[...location[active.label]].filter((_,i) => i !== index)}))
+    }
+  }
+  const [active,setActive] = useState(subMenu[0])
   const refInput = useRef()
   const onEdit = () => refInput.current.focus()
   const renderedList = useMemo(()=>{
@@ -54,16 +68,19 @@ const Region = ({
       }]
     ,[])
   },[active.key])
-  const toggleSelect = () => {}
 
-  const renderItem = ({item}) => (
-    <DefaultListItem
-      onPress={toggleSelect}
-      styleTitle={{fontSize:13,color:"#787882",fontFamily:"ProximaNova-Regular"}}
-      // selected={true}
-      {...item}
-    />
-  );
+
+  const renderItem = ({item}) => {
+    const onPress = () => toggleItem(item)
+    return (
+      <DefaultListItem
+        onPress={onPress}
+        styleTitle={{fontSize:13,color:"#787882",fontFamily:"ProximaNova-Regular"}}
+        selected={location[active.label].findIndex(loc => loc === item.title) > -1}
+        {...item}
+      />
+    )
+  };
   return (
     <View>
       <TouchableOpacity
