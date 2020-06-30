@@ -18,7 +18,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {fetchCellars,deleteCellar} from '../functions/api'
 import {setCellar,resetCellar,resetSearch} from '../redux/actions'
-
+import CellarLayout from 'components/cellar'
 const { height, width } = Dimensions.get('window');
 
 function mapStateToProps(state,props){
@@ -90,13 +90,13 @@ class Cellars extends React.Component {
 
   render(){
     const { firstQuery } = this.state;
-    if (!this.props.cellars) return (
-      <View style={styles.root}>
-        <ActivityIndicator />
-      </View>
-    )
+    return <CellarLayout />
+    // if (!this.props.cellars) return (
+    //   <View style={styles.root}>
+    //     <ActivityIndicator />
+    //   </View>
+    // )
     let cellars = []
-    console.log(this.props.cellars)
     Object.keys(this.props.cellars).map((e,i)=>{
 
       let cellar = this.props.cellars[e]

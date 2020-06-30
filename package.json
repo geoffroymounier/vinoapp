@@ -2,7 +2,9 @@
   "name": "vinoamplify",
   "version": "0.0.1",
   "private": true,
-  "moduleRoots": [ "./app/components" ],
+  "moduleRoots": [
+    "./app/components"
+  ],
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
@@ -36,7 +38,7 @@
     "react-native-keychain": "^5.0.1",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-picker-select": "^6.6.0",
-    "react-native-reanimated": "^1.7.0",
+    "react-native-reanimated": "^1.9.0",
     "react-native-safe-area-context": "^0.7.3",
     "react-native-screens": "^2.2.0",
     "react-native-svg": "^12.1.0",

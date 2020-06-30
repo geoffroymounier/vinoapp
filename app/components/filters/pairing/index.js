@@ -8,7 +8,17 @@ import {setSearch} from 'reduxStore/actions'
 import PropTypes from 'prop-types'
 import pairingArray from './pairing.js'
 const {width,height} = Dimensions.get('window')
+const unNestArray = (item) => { // create an array of all the categories we are coming from => recursive
+  const matchItem = pairingArray.find(e => e.key === item) || {}
+  if (!!matchItem.type) {
+    return [...unNestArray(matchItem.referrer[0]),matchItem]
+  } else if (matchItem.title) {
+    return [matchItem]
+  } else {
+    return []
+  }
 
+}
 const Pairing = ({
   backgroundColor,
   activeBackgroundColor,
@@ -25,7 +35,12 @@ const Pairing = ({
   const dispatch = useDispatch()
   const pairings = useSelector(state => state.search.pairings) || []
   const refInput = useRef()
+  const filteredPairingArray = useRef([])
   const [selectedCategory, setSelectedCategory] = useState(null)
+
+  const subMenu = selectedCategory ? [...unNestArray(selectedCategory),filteredPairingArray.current[0]] : []
+  const subString = subMenu.map(el => el.key).slice(0,-1).join(' - ').toLowerCase()
+  const isAllSelected = pairings.filter(p => new RegExp(subString).test(p)).length === filteredPairingArray.current.length
 
   const toggleItem = (items,eraseAllInCategory = false) => { // eraseAllInCategory is true if clicking on 'all' being already ticked => deselect all
     const isMultiple = items.length > 1 // isMultiple is true when we click on "all", not being already ticket => select all
@@ -34,33 +49,25 @@ const Pairing = ({
       const index = newPairing.findIndex(pairing => pairing === item)
       if ((!isMultiple || eraseAllInCategory) && index > -1) { // provided 1. already in redux AND (we call only a single change OR we deselect all)
         newPairing.splice(index,1) // remove the entry
-      }
+      } else if (eraseAllInCategory) {
+        const mainCategoryIndex = newPairing.findIndex(pairing => pairing === subString)
+        newPairing.splice(mainCategoryIndex,1)
+        newPairing = [...newPairing,filteredPairingArray.current.filter(p => !(new RegExp(p.key)).test(item))]
+      } // all is selected
       else newPairing = [...newPairing,item] // otherwise add it
     })
+    console.log(newPairing)
     dispatch(setSearch({['pairings']:[...new Set([...newPairing])]})) // remove doublons
   }
 
-  const unNestArray = (item) => { // create an array of all the categories we are coming from => recursive
-    const matchItem = pairingArray.find(e => e.key === item) || {}
-    if (!!matchItem.type) {
-      return [...unNestArray(matchItem.referrer[0]),matchItem]
-    } else if (matchItem.title) {
-      return [matchItem]
-    } else {
-      return []
-    }
 
-  }
   const onEdit = () => refInput.current.focus()
 
   const selectedItem = pairingArray.find(p => p.key === selectedCategory)
-  const filteredPairingArray = useMemo(() => {
+  filteredPairingArray.current = useMemo(() => {
     return pairingArray.filter(p => !selectedCategory ? !p.referrer : (p.referrer || []).includes(selectedCategory))
   },[selectedCategory])
-  const subMenu = selectedCategory ? [...unNestArray(selectedCategory),filteredPairingArray[0]] : []
-  const subString = subMenu.map(el => el.key).slice(0,-1).join(' - ').toLowerCase()
-  const isAllSelected = pairings.filter(p => new RegExp(subString).test(p)).length === filteredPairingArray.length
-
+  console.log(pairings)
   return (
     <View>
       <TouchableOpacity
@@ -142,10 +149,10 @@ const Pairing = ({
                 "key":'all',
                 "title":'Select All',
                 "image": require("assets/meat.png")
-              },...filteredPairingArray] : filteredPairingArray).map(e => {
+              },...filteredPairingArray.current] : filteredPairingArray.current).map(e => {
                 const onPress = () => {
                   if (e.key === 'all') {
-                    toggleItem(filteredPairingArray.reduce((arr,item) => {
+                    toggleItem(filteredPairingArray.current.reduce((arr,item) => {
                       return [...arr,`${subString} - ${item.key}`]
                     },[]), isAllSelected)
                   } else if (pairingArray.findIndex(p => (p.referrer || []).includes(e.key)) > -1) {
@@ -154,7 +161,7 @@ const Pairing = ({
                     toggleItem([`${subString} - ${e.key}`])
                   }
                 }
-                const isActive = isAllSelected || pairings.findIndex(p => (new RegExp(subString ? `${subString} - ${e.key}` : e.key)).test(p) ) > -1
+                const isActive = isAllSelected || pairings.findIndex(p => (new RegExp(p)).test(subString ? `${subString} - ${e.key}` : e.key) ) > -1
                 return (
                   <TouchableOpacity
                     onPress={onPress}
