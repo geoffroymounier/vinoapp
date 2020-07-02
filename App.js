@@ -5,21 +5,18 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import {store,persistor} from './app/redux/store/configureStore.js'
 import ReduxNavigation from './app/navigation/index.js'
 import NavigationService from './app/functions/navigationService'
-import Amplify, { API } from 'aws-amplify';
-import awsconfig from './aws-exports';
+import AmplifyConfig from './aws-exports.js';
 
-// import { withAuthenticator } from 'aws-amplify-react-native';
-Amplify.configure(awsconfig);
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     console.disableYellowBox = true;
+    AmplifyConfig()
     // Creating the socket-client instance will automatically connect to the server.
 
 
   }
-
   render() {
 
 
