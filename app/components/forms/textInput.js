@@ -5,11 +5,11 @@ import Icon from 'components/thumbnails/icon';
 const arrowRight = require('assets/arrow-right.png')
 import PropTypes from 'prop-types'
 
-const TextInputComponent = ({ icon, label, placeholder, value, disabled, onChange }) => {
+const TextInputComponent = ({ icon, label, placeholder, value, disabled, onChange,styleContainer }) => {
   const inputRef = useRef()
   const onChangeText = (text) => onChange(text)
   return (
-    <TouchableOpacity disabled={disabled} onPress={() => inputRef.current.focus()} style={styles.touchableOpacity}>
+    <TouchableOpacity disabled={disabled} onPress={() => inputRef.current.focus()} style={{...styles.touchableOpacity,...styleContainer}}>
       <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
           {icon && <Icon
@@ -63,12 +63,14 @@ TextInputComponent.propTypes = {
   placeholder: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   onPress: PropTypes.func,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  styleContainer:PropTypes.object
 }
 TextInputComponent.defaultProps = {
   label: '',
   placeholder: '',
   onPress: () => { },
+  styleContainer:{},
   disabled: false
 }
 export default TextInputComponent

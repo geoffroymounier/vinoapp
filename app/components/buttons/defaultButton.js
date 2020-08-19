@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Icon from 'components/thumbnails/icon';
 import {TouchableOpacity,Text,StyleSheet} from 'react-native'
 
-const DefaultButton = ({label,backgroundColor,textColor,styleContainer,styleText,disabled,onPress}) => (
+const DefaultButton = ({label,icon,backgroundColor,textColor,styleIcon,styleContainer,styleText,disabled,onPress}) => (
   <TouchableOpacity
     style={{
       ...styles.buttonView,
@@ -12,6 +13,13 @@ const DefaultButton = ({label,backgroundColor,textColor,styleContainer,styleText
     disabled={disabled}
     onPress={onPress}
     >
+      {icon && <Icon
+        width={20}
+        height={20}
+        styleContainer={{...styleIcon.container}}
+        style={{ ...styleIcon.icon}}
+        name={icon} />
+      }
       <Text style={{
         ...styles.buttonText,
         color : textColor,
@@ -30,6 +38,7 @@ DefaultButton.propTypes = {
 DefaultButton.defaultProps = {
   label:'',
   backgroundColor:'#9F041B',
+  styleIcon:{},
   textColor:'white',
   onPress:()=>{},
   disabled:false
@@ -39,7 +48,9 @@ const styles = StyleSheet.create({
   buttonView : {
     marginVertical:10,
     marginHorizontal:5,
+    flexDirection:'row',
     alignSelf:'center',
+    alignItems:'center',
     justifyContent:'center',
     height:50,
     borderRadius:25,
