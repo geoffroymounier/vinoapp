@@ -26,16 +26,16 @@ const AuthLoading = ({navigation,route}) => {
   const checkIfAuthenticated = async () => {
     let currentSession = null;
     try {
-      currentSession = await Auth.currentSession();
     } catch(err) {
       console.log(err);
     }
     setTimeout(()=>{
     const ftu = false
-    // navigation.replace('login_views',{screen:'stack_wine'})
+    navigation.replace('login_views',{screen:'stack_wine'})
     if (ftu) {
       navigation.push('ftu_open')
     } else {
+      console.log("move to 'stack wine'")
       navigation.replace(currentSession ? 'stack_wine' : 'login_views');
     }
     },1000)
@@ -43,6 +43,7 @@ const AuthLoading = ({navigation,route}) => {
   useEffect(() => {
     checkIfAuthenticated();
     Hub.listen('auth', async (data) => {
+      console.log("move to 'stack wine'")
       switch (data.payload.event) {
         case 'signIn':
           navigation.dispatch(

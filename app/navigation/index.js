@@ -33,6 +33,7 @@ import EditCellar from '../views/editCellar'
 import AddCellar from '../views/AddCellar'
 import AddWine from '../views/AddWine'
 import ChooseMethodAddWine from '../views/AddWine/ChooseMethod'
+import AddWineModal from '../views/AddWine/AddWineModal'
 import ScanLabelAddWine from '../views/AddWine/ScanLabel'
 import SearchDbAddWine from '../views/AddWine/SearchDb'
 
@@ -68,6 +69,18 @@ const SearchStack = () => (
     </Stack.Screen>
   </Stack.Navigator>
 )
+const ChooseAddWineMethodModal = () => (
+  <Stack.Navigator>
+    <Stack.Screen name={'choose_add_wine_method'}
+      options={{
+        header:() => null,
+        headerTitle:'',
+      }}
+      component={AddWineModal} />
+      <Stack.Screen name={'add_new_list'} component={ScanLabelAddWine} />
+     <Stack.Screen name={'add_new_tasting_note'} component={SearchDbAddWine} />
+  </Stack.Navigator>
+)
 const AddWineStack = () => (
     <Stack.Navigator
       // headerMode={'none'}
@@ -81,15 +94,9 @@ const AddWineStack = () => (
         headerTintColor: 'white',
         border:'none',
       }}
-      >
-    <Stack.Screen name={'choose_method'}
-      options={{
-        header:() => null,
-        headerTitle:'',
-      }}
-      component={ChooseMethodAddWine} />
-    <Stack.Screen name={'scan_method'} component={ScanLabelAddWine} />
-    <Stack.Screen name={'search_db'} component={SearchDbAddWine} />
+    >
+    <Stack.Screen name={'cellar'} component={ChooseMethodAddWine}/>
+    <Stack.Screen name={'add_new_cellar'} component={SearchDbAddWine} />
   </Stack.Navigator>
 )
 const WineListStack = () => (
@@ -150,6 +157,9 @@ const WineTabs = () => (
     </Tab.Screen>
     <Tab.Screen name='cellar_list' options={{header:null}}>
       {CellarListStack}
+    </Tab.Screen>
+    <Tab.Screen name='add_sth' options={{header:null}}>
+      {AddWineStack}
     </Tab.Screen>
     <Tab.Screen name='wish_list'>
       {WishListStack}
@@ -232,9 +242,8 @@ const StackWine = () => (
       header:null,
       gesturesEnabled:false
     }}
-    cardStyle={{
-      opacity: 1.0,
-      backgroundColor:'rgba(200,200,200,0.4)'
+    screenOptions={{
+      cardStyle: { backgroundColor: '#ECEFF1', opacity: 0.92 },
     }}
     >
     <Stack.Screen name={'winestack'}>
@@ -242,6 +251,7 @@ const StackWine = () => (
     </Stack.Screen>
     <Stack.Screen name={'ftu_import'} component={EditCellar} />
     <Stack.Screen name={'switch_premium'}  component={Region} />
+    <Stack.Screen name={'choose_add_wine_method'}>{ChooseAddWineMethodModal}</Stack.Screen>
   </Stack.Navigator>
 )
 const FirstTimeOpen = () => (

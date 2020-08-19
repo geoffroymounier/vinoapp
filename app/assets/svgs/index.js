@@ -2,6 +2,7 @@ import Wine from './wine'
 import Search from './search'
 import Still from './still'
 import Sparkling from './sparkling'
+import Times from './times'
 import Grape from './grape'
 import Occasion from './occasion'
 import Region from './region'
@@ -28,6 +29,7 @@ const svgs = {
   wine : Wine,
   search : Search,
   still : Still,
+  times: Times,
   sparkling : Sparkling,
   occasion : Occasion,
   grape : Grape,

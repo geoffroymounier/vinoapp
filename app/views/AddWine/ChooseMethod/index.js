@@ -1,93 +1,46 @@
-import React, {useState,useEffect} from 'react';
-import {Keyboard,SafeAreaView,Dimensions,Platform,StyleSheet, Text, View,ScrollView,KeyboardAvoidingView,TouchableOpacity} from 'react-native';
-import DefaultButton  from 'components/buttons/defaultButton'
-import TextInput  from 'components/forms/textInput'
-import Image  from 'components/forms/image'
-import { BlurView } from "@react-native-community/blur";
-import times  from 'assets/times.png'
-import {useDispatch,useSelector} from 'react-redux';
-import {saveCellar} from 'functions/api'
-const { height, width } = Dimensions.get('window');
+import React from 'react';
+import { Keyboard, SafeAreaView, Dimensions, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+const { width } = Dimensions.get('window');
 
-const AddCellar = ({navigation}) => {
-  const dispatch = useDispatch()
-  const [cellar,setCellar] = useState({})
-  const triggerSaveCellar = (cellar,id) => dispatch(saveCellar(cellar,id))
-  const goBack = () => {
-    // navigation.popToTop();
-    navigation.goBack('wines');
-  }
-  const scanLabel = () => navigation.push('scan_method')
-  const searchLabel = () => navigation.push('search_db')
-  useEffect(()=>{
-    navigation.setOptions({
-    //   header :() => (
-    //     <View>
-    //
-    //
-    //     <BlurView
-    //       style={styles.absolute}
-    //       blurType="regular"
-    //       reducedTransparencyFallbackColor="white"
-    //     />
-    //     <Text>cioucio</Text>
-    //     </View>
-    // ),
-      headerRight: () => (
-      <DefaultButton
-        label={<Image source={times} height={20} width={20} style={{tintColor:'white'}}/>}
-        backgroundColor={'transparent'}
-        textColor={'white'}
-        styleContainer={{position:"absolute",top:5,right:15,width:20,height:20}}
-        onPress={goBack}
-      />)
-    })
-  },[])
-  const {name,description,commentaire} = cellar
-    return (
-      <SafeAreaView style={{flex:1,justifyContent:'center'}}>
-      <BlurView
-        style={styles.absolute}
-        blurType="regular"
-        reducedTransparencyFallbackColor="white"
-      />
-      <TouchableOpacity activeOpacity={1} onPress={()=>Keyboard.dismiss()} style={{flex:1,justifyContent:'center'}}>
+const AddCellar = ({ navigation }) => {
+  return (
+    <SafeAreaView style={{ flex: 1, justifyContent: 'center', backgroundColor: `rgba(178, 178, 184, 0.81)` }}>
+      <TouchableOpacity activeOpacity={1} onPress={() => Keyboard.dismiss()} style={{ flex: 1, justifyContent: 'center' }}>
+        <View style={{ flex: 1, width, justifyContent: 'flex-end' }}>
+          <View style={{ flexDirection: 'row', flex: 0.75, paddingVertical: 30 }}>
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 
-          <View style={{justifyContent:'center',flex:1,width,borderRadius:20}}>
-            <Text style={{...styles.title,alignSelf:'center',color:'white'}}>{"Add Wine"}</Text>
+              <TouchableOpacity onPress={() => navigation.push('choose_add_wine_method')}>
+                <View style={styles.buttonContainer} />
+                <Text style={styles.text}>{"New wine"}</Text>
+              </TouchableOpacity>
 
-                <DefaultButton
-                  label={"New Wine From Database"}
-                  onPress={searchLabel}
-                  styleContainer={{width:"80%",height:50}}
-                />
-                <DefaultButton
-                  label={"New Wine From Label Scan"}
-                  onPress={scanLabel}
-                  styleContainer={{width:"80%",height:50}}
-                />
-                <DefaultButton
-                  label={"Add a tasting note"}
-                  onPress={searchLabel}
-                  styleContainer={{width:"80%",height:50}}
-                />
+            </View>
+            <View style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
+              <TouchableOpacity>
+                <View style={styles.buttonContainer} />
+                <Text style={styles.text}>{"Create a new list"}</Text>
+              </TouchableOpacity>
 
-
-
+              <TouchableOpacity>
+                <View style={styles.buttonContainer} />
+                <Text style={styles.text}>{"New wine cellar"}</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+              <TouchableOpacity>
+                <View style={styles.buttonContainer} />
+                <Text style={styles.text}>{"Create a tasting note"}</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          <DefaultButton
-            label={"Annuler"}
-            backgroundColor={'transparent'}
-            textColor={'black'}
-            styleContainer={{width:"80%",maxHeight:50,borderColor:'black',borderWidth:1}}
-            onPress={goBack}
-          />
-        </TouchableOpacity>
-        </SafeAreaView>
+        </View>
+      </TouchableOpacity>
+    </SafeAreaView>
 
 
 
-    );
+  );
 
 }
 
@@ -95,7 +48,7 @@ const AddCellar = ({navigation}) => {
 const styles = StyleSheet.create({
   title: {
     fontSize: 18,
-    alignSelf:'flex-start',
+    alignSelf: 'flex-start',
     textAlign: 'left',
     margin: 10,
   },
@@ -103,8 +56,23 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  buttonContainer: {
+    height: 100,
+    width: 100,
+    borderRadius: 50,
+    backgroundColor: 'white'
+  },
+  text: {
+    fontFamily: 'ProximaNova-Regular',
+    fontStyle: 'normal',
+    fontWeight: 'bold',
+    fontSize: 14,
+    lineHeight: 15,
+    textAlign: 'center',
+    marginVertical: 7,
 
-
+    color: '#FFFFFF'
   },
   absolute: {
     position: "absolute",

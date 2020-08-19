@@ -1,13 +1,20 @@
-import React, {useRef} from 'react'
+import React, {useRef,useState} from 'react'
 import {Text,StyleSheet,ScrollView,TouchableOpacity,View,Dimensions} from 'react-native';
 import {useDispatch,useSelector} from 'react-redux'
 import { PinchGestureHandler, State, PanGestureHandler } from 'react-native-gesture-handler'
 import {setSearch} from 'reduxStore/actions'
 import Animated from "react-native-reanimated";
 import Icon from 'components/thumbnails/icon';
+import Button from 'components/buttons/defaultButton';
+import CrossBox from 'components/cellar/box/crossBox';
 import PropTypes from 'prop-types'
+import { getStoredState } from 'redux-persist';
 const {width,height} = Dimensions.get('window')
 
+
+const LineButtons = () => {
+
+}
 
 const Cellar = ({
     backgroundColor,
@@ -20,29 +27,19 @@ const Cellar = ({
     styleContainer,
     style
   }) => {
+  const [vSeparate,setVSeparate] = useState([])
+  const [hSeparate,setHSeparate] = useState([])
   const VELOCITY_THRESHOLD = 0.5;
   const POSITION_THRESHOLD = 0.5;
   const VELOCITY = 50;
-  const rowArray = [
-    [
-      {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}
-    ],
-    [
-      {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}
-    ],
-    [
-      {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}
-    ],
-    [
-      {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}
-    ],
-    [
-      {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}
-    ],
-    [
-      {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}
-    ]
-  ]
+  const [cellarStructure,setCellarStructure] = useState({
+    winePerBlock:39,
+    blockType:'cross',
+    vSplit:[[true,true,true],[true,false,true],[true,false,true],[true,false,true]],
+    hSplit:[[true,false,true],[true,false,true]],
+    vWrap:[[false,false],[false,false],[false,false],[false,false]],
+    hWrap:[[false,false],[false,false]]
+  })
   const {
     event,
     Value,
@@ -118,10 +115,12 @@ const Cellar = ({
     min(maxX,max(minY,add(offsetY, dragY))),
     set(offsetY, min(maxX,max(minY,add(offsetY, dragY))))
   );
-  console.log(transX.current)
+
+  const lineArray = [...Array(1).keys()];
+  const colArray = [...Array(2).keys()];
   return (
     <>
-    <View style={{ width, height : 400, justifyContent: 'center', alignItems: 'center',backgroundColor:'green' }}>
+    <View style={{ width, height, justifyContent: 'center', alignItems: 'center',backgroundColor:'green' }}>
       <PinchGestureHandler
         onGestureEvent={onPinchGestureEvent}
         onHandlerStateChange={onPinchGestureEvent}
@@ -151,12 +150,98 @@ const Cellar = ({
           ]
         }}
         >
-        {rowArray.map((row,line) => {
-        return (
-            <View horizontal key={line} style={{flexDirection:'row'}}>
-            {row.map((item,col) => (
-              <View key={col} style={{width:50,height:50,backgroundColor:'red',borderColor:'blue',borderWidth:1}}/>
-            ))}
+        {cellarStructure.hSplit.map((hSplit,line) => {
+          
+          return (
+            <View horizontal key={line.toString} style={{flexDirection:'row'}}>
+              {cellarStructure.vSplit.map((vSplit,col) => {
+                const vWrap = cellarStructure.vWrap[col]
+
+                const setFirstSeparator = () => {
+                  if (!col) return
+                  const newVsplit = [!vSplit[0],vSplit[1],vSplit[2]]
+                  const newVSplitArray = [...cellarStructure.vSplit]
+                  newVSplitArray[col] = newVsplit
+                  newVSplitArray[col-1] = [newVSplitArray[col-1][0],newVSplitArray[col-1][1],!newVSplitArray[col-1][2]]
+                  setCellarStructure({...cellarStructure,vSplit:newVSplitArray})
+                }
+                const setMidSeparator = () => {
+                  const newVsplit = [vSplit[0],!vSplit[1],vSplit[2]]
+                  const newVSplitArray = [...cellarStructure.vSplit]
+                  newVSplitArray[col] = newVsplit
+                  setCellarStructure({...cellarStructure,vSplit:newVSplitArray})
+                }
+                const setFirstWrap = () => {
+                  const newVWrap= [!vWrap[0],vWrap[1]]
+                  const newVWrapArray = [...cellarStructure.vWrap]
+                  newVWrapArray[col] = newVWrap
+                  setCellarStructure({...cellarStructure,vWrap:newVWrapArray})
+                }
+
+                const setLastWrap = () => {
+                  const newVWrap= [vWrap[0],!vWrap[1]]
+                  const newVWrapArray = [...cellarStructure.vWrap]
+                  newVWrapArray[col] = newVWrap
+                  setCellarStructure({...cellarStructure,vWrap:newVWrapArray})
+                }
+                  console.log(vSplit[1],col)
+                return (
+                <View key={col.toString()} style={{position:'relative'}}>
+                  {!line && 
+                  <View 
+                    style={{flexDirection:'row',backgroundColor:'yellow',position:'absolute',top:-30,width:'100%'
+                  }}>
+                        <View
+                          style={{flex:0,backgroundColor:'red',position:'relative'}}
+                        >
+                        <Button
+                          onPress={setFirstSeparator}
+                          styleContainer={{...styles.buttonIcon,opacity: !col ? 0 : vSplit[0] ? 1 : 0.5}}
+                          styleText={styles.buttonText}
+                          label={'|'} />
+                        </View>
+                        {!vWrap[1] && 
+                        <View
+                          style={{flex:1,backgroundColor:'blue'}}
+                        >
+                          <Button
+                          onPress={setFirstWrap}
+                          styleContainer={{...styles.buttonIcon,opacity:!vWrap[0] ? 1 : 0.5}}
+                          styleText={styles.buttonText}
+                          label={'>'} />
+                        </View>
+                        }
+                        {!vWrap[1] && !vWrap[0] &&
+                        <View
+                          style={{flex:0,backgroundColor:'orange'}}
+                        >
+                          <Button
+                          onPress={setMidSeparator}
+                          styleContainer={{...styles.buttonIcon,opacity:vSplit[1] === true ? 1 : 0.5}}
+                          styleText={styles.buttonText}
+                          label={'|'} />
+                        </View>}
+                        {!vWrap[0] && 
+                        <View
+                          style={{flex:1,backgroundColor:'black'}}
+                        >
+                          <Button
+                          onPress={setLastWrap}
+                          styleContainer={{...styles.buttonIcon,opacity:!vWrap[1] ? 1 : 0.5}}
+                          styleText={styles.buttonText}
+                          label={'<'} />
+                        </View>}
+                      </View> 
+}
+                      <CrossBox 
+                      vSplit={vSplit}
+                      hSplit={hSplit}
+                      vWrap={vWrap}
+                      hWrap={cellarStructure.hWrap[line]}
+                      nbBottles={cellarStructure.winePerBlock}
+                      />
+                </View>
+               )})}
             </View>
         )})}
         </Animated.View>
@@ -179,6 +264,21 @@ const styles = StyleSheet.create({
     fontSize:17,
     color:"#3B3B3D",
     fontFamily:"ProximaNova-Regular"
+  },
+  buttonIcon: {
+    position:'absolute',
+    marginVertical:0,
+    borderRadius:14,
+    borderColor:'#787882',
+    borderWidth:0.4,
+    padding:0,
+    height:20,
+    width:20
+  },
+  buttonText:{
+    paddingHorizontal:0,
+    paddingVertical:0,
+    fontSize:11,
   }
 });
 

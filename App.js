@@ -7,7 +7,6 @@ import ReduxNavigation from './app/navigation/index.js'
 import NavigationService from './app/functions/navigationService'
 import AmplifyConfig from './aws-exports.js';
 
-
 class App extends React.Component {
   constructor(props) {
     super(props);

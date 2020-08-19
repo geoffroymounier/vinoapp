@@ -95,18 +95,14 @@ const SearchDb = ({navigation}) => {
 
     return (
       <SafeAreaView style={{flex:1,justifyContent:'center'}}>
-      <BlurView
-        style={styles.absolute}
-        blurType="dark"
-        reducedTransparencyFallbackColor="white"
-      />
-      <TouchableOpacity activeOpacity={1} onPress={()=>Keyboard.dismiss()} style={{flex:1,justifyContent:'center'}}>
 
           <View style={{justifyContent:'center',flex:1,width,borderRadius:20}}>
             <Text style={{...styles.title,alignSelf:'center',color:'white'}}>{"Add Wine"}</Text>
 
                 <TextInput
                   onChange={searchValueChanged}
+                  icon='search'
+                  placeholder={'Search a Wine'}
                 />
                 <FlatList
                   data={data}
@@ -125,7 +121,6 @@ const SearchDb = ({navigation}) => {
 
           </View>
 
-        </TouchableOpacity>
         </SafeAreaView>
 
 
