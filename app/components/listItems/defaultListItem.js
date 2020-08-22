@@ -3,8 +3,8 @@ import {Platform,StyleSheet,View,Text,TouchableOpacity} from 'react-native';
 import Icon from 'components/thumbnails/icon';
 import PropTypes from 'prop-types'
 
-const DefaultListItem = ({onPress,id,icon,title,subtitle,styleContainer,styleTitle,styleSubtitle,selected}) => {
-  const onPressItem = () => onPress(id)
+const DefaultListItem = ({onPressItem,id,icon,title,subtitle,styleContainer,styleTitle,styleSubtitle,selected}) => {
+  const onPress = () => onPressItem(id)
 
   return (
     <TouchableOpacity onPress={onPress} style={{...styles.container,...styleContainer}}>
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 });
 DefaultListItem.propTypes = {
   subtitle:PropTypes.string,
-  onPress:PropTypes.func,
+  onPressItem:PropTypes.func,
   selected:PropTypes.bool,
   styleContainer:PropTypes.object,
   icon:PropTypes.object,
@@ -55,7 +55,7 @@ DefaultListItem.defaultProps = {
   subtitle:null,
   selected:false,
   icon:null,
-  onPress:()=>{},
+  onPressItem:()=>{},
   styleTitle:{},
   styleSubtitle:{},
   styleContainer:{}

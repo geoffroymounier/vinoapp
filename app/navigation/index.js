@@ -55,9 +55,13 @@ const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 
 const EditWineStack = () => (
-  <Stack.Navigator headerMode={'none'}>
-    <Stack.Screen name='edit_wine' component={EditWine} />
-    <Stack.Screen name={'choseCellar'} component={ChoseCellar} />
+  <Stack.Navigator 
+    screenOptions={{
+    cardStyle: { backgroundColor: 'white' },
+    headerTintColor: 'white',
+    border:'none',
+  }} headerMode={'none'}>
+    <Stack.Screen name='edit_wine_default' component={EditWine} />
   </Stack.Navigator>
 )
 const SearchStack = () => (
@@ -78,7 +82,17 @@ const ChooseAddWineMethodModal = () => (
       }}
       component={AddWineModal} />
       <Stack.Screen name={'add_new_list'} component={ScanLabelAddWine} />
-     <Stack.Screen name={'add_new_tasting_note'} component={SearchDbAddWine} />
+      <Stack.Screen name={'add_new_tasting_note'} component={SearchDbAddWine} />
+      <Stack.Screen name='edit_wine' component={EditWineStack} />
+      <Stack.Screen name={'choseCellar'} component={ChoseCellar} />
+      <Stack.Screen name={'region'}  component={Region} />
+      <Stack.Screen name={'country'} component={Country} />
+      <Stack.Screen name={'appelation'} component={Appelation} />
+      <Stack.Screen name={'cepage'} component={Cepage} />
+      <Stack.Screen name={'annee'} component={Annee} />
+      <Stack.Screen name={'accords'} component={Accords} />
+      <Stack.Screen name={'aromes'} component={Aromes} />
+      <Stack.Screen name={'pastilles'} component={Pastilles} />
   </Stack.Navigator>
 )
 const AddWineStack = () => (

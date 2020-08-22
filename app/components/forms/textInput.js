@@ -5,7 +5,7 @@ import Icon from 'components/thumbnails/icon';
 const arrowRight = require('assets/arrow-right.png')
 import PropTypes from 'prop-types'
 
-const TextInputComponent = ({ icon, label, placeholder, value, disabled, onChange,styleContainer }) => {
+const TextInputComponent = ({ icon, label, placeholder, value, disabled, onChange,styleContainer,styleText }) => {
   const inputRef = useRef()
   const onChangeText = (text) => onChange(text)
   return (
@@ -22,9 +22,10 @@ const TextInputComponent = ({ icon, label, placeholder, value, disabled, onChang
         </View>
         <TextInput
           ref={inputRef}
+          autoCorrect={false}
           placeholderTextColor="#515151"
           placeholder={placeholder}
-          style={styles.title}
+          style={{...styles.title,...styleText}}
           value={value}
           onChangeText={onChangeText}
         />
@@ -64,6 +65,7 @@ TextInputComponent.propTypes = {
   value: PropTypes.string.isRequired,
   onPress: PropTypes.func,
   disabled: PropTypes.bool,
+  styleText:PropTypes.object,
   styleContainer:PropTypes.object
 }
 TextInputComponent.defaultProps = {
@@ -71,6 +73,7 @@ TextInputComponent.defaultProps = {
   placeholder: '',
   onPress: () => { },
   styleContainer:{},
+  styleText:{},
   disabled: false
 }
 export default TextInputComponent

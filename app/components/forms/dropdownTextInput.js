@@ -24,7 +24,7 @@ const DropDownTextInput = ({
       disabled={disabled} style={styles.cartoucheRight}>
       <View style={{flexDirection:'row',flexWrap:'wrap',flex:1,justifyContent:'flex-end'}}>
         <Text style={styles.textInputLabel}>{label}</Text>
-        <Text style={styles.textInputPicker}>{items[value].label || placeholder}</Text>
+        <Text style={styles.textInputPicker}>{(items[value]||{}).label || placeholder}</Text>
       </View>
 
       <Image

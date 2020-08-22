@@ -1,141 +1,178 @@
-import React, {Component} from 'react';
-import {FlatList,View,TouchableWithoutFeedback,Keyboard,TouchableOpacity,Modal,ScrollView,Text,Dimensions} from 'react-native';
-import Checkbox from '../markers/checkbox2.js';
-import Button from '../markers/button.js';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Icon from '../markers/icon.js';
-import SearchBar from '../markers/searchbar.js';
-import raw from '../array/raw'
-import alasql from 'alasql'
-import {bindActionCreators} from 'redux'
-import {setWine,setSearch} from '../../redux/actions'
-import {connect} from 'react-redux'
-function mapStateToProps(state,props){
-  let {country,region,appelation} = state[props.navigation.search == true ? 'search' : 'wine']
-  let appelations = country ? alasql('SELECT *, appelation as label  FROM ? WHERE country_code = "'+country+'" ORDER BY appelation ASC ' ,[raw]) :
-                    alasql('SELECT *, appelation as label FROM ? ORDER BY appelation ASC ' ,[raw])
+import React, { useState } from 'react';
+import { FlatList, View, Text, StyleSheet } from 'react-native';
+import DefaultButton from 'components/buttons/defaultButton';
+import Icon from 'components/thumbnails/icon';
+import Separator from 'components/forms/separator';
+import TextInput from 'components/forms/textInput';
+import DefaultListItem from 'components/listItems/defaultListItem.js';
 
-  appelations.forEach((r,index) => r.key = index)
-
-  return{
-    appelations : appelations,
-    search : props.navigation.search == true,
-    selected : appelation
+const filterArray = [
+  {
+    key: 'aoc',
+    value: 'AOP',
+    backgroundColor:'#787882',
+    color:'white',
+    question: 'CIYHHKJVBCKJHEF'
+  },
+  {
+    key: 'igp',
+    value: 'IGP',
+    backgroundColor:'#787882',
+    color:'white',
+    question: 'CIYHHKJVBCKJHEF'
+  },
+  {
+    key: 'vsig',
+    value: 'VSIG',
+    color:'white',
+    backgroundColor:'#787882',
+    question: 'CIYHHKJVBCKJHEF'
   }
-}
-function matchDispatchToProps(dispatch){
-  return bindActionCreators({setWine,setSearch}, dispatch)
-}
-class MyListItem extends React.PureComponent {
-  _onPress = () => {
-    this.props.onPressItem(this.props.id);
+]
+const Appelation = ({ selected }) => {
+  const [filters, setFilters] = useState([])
+  const [modal, setModal] = useState(null)
+  const toggleFilter = (key) => {
+    const index = filters.findIndex(f => f === key)
+    if (index > -1) setFilters(filters.filter(f => f !== key))
+    else setFilters([...filters, key])
+  }
+  const _keyExtractor = (item, index) => item.key.toString();
+
+  const _onPressItem = (id) => {
   };
 
-  render() {
-    const textColor = this.props.selected ? 'black' : '#4c4c4c';
-    return (
-      <TouchableOpacity onPress={this._onPress} >
-        <View style={{flexDirection:'row',alignItems:'center',borderColor:"lightgray",borderBottomWidth:1,paddingVertical:10}}>
-           <Checkbox
-             onPress={this._onPress}
-            checked={this.props.selected}
-          />
-          <Text style={{color: textColor}}>{this.props.title}</Text>
-        </View>
-      </TouchableOpacity>
-    );
-  }
-}
-
-
-class Appelation extends React.PureComponent {
-  constructor(props){
-    super(props)
-    this.state = {search:'',selected: ''};
-    this._onPressItem = this._onPressItem.bind(this)
-  }
-
-
-  _keyExtractor = (item, index) => item.key.toString();
-
-  _onPressItem = (id: string) => {
-
-    Keyboard.dismiss()
-
-    let newWine = {
-      appelation : (id == -1) ? null : this.props.appelations[id].appelation
-    }
-    if (id != -1 ) {
-      newWine.region = this.props.appelations[id].region
-      newWine.country = this.props.appelations[id].country_code
-    }
-
-    this.props.search ? this.props.setSearch(newWine) : this.props.setWine(newWine)
-    this.props.navigation.goBack()
-  };
-
-  _renderItem = ({item}) => (
-    <MyListItem
+  const _renderItem = ({ item }) => (
+    <DefaultListItem
       id={item.key}
-      onPressItem={this._onPressItem}
-      selected={this.props.selected == item.appelation}
+      onPressItem={_onPressItem}
+      selected={selected == item.appelation}
       title={item.label}
     />
   );
-
-  render() {
-      let data = [{label:'--- Non Applicable ---',appelation:null,key:-1},...this.props.appelations.filter(r=>  r.appelation.toLowerCase().match((this.state.search ||'').toLowerCase()))]
-
-    return (
-
-      <View style={{flex:1,backgroundColor:'white',paddingTop:30}}>
-          <View
-            style={{
-
-              flexDirection:'row',
-              alignItems: "center",
-            }}>
-
-            <SearchBar
-              searchIcon ={false}
-              onChangeText={(search)=>this.setState({search})}
-              placeholder='Rechercher'
-              underlineColorAndroid='transparent'
-              autoCorrect = {false}
-              lightTheme
-              autoFocus
-              value={this.state.search}
-              // showLoading
-              inputContainerStyle={{backgroundColor:'transparent'}}
-              containerStyle={{flex:1,backgroundColor:'transparent',borderBottomWidth:0,borderTopWidth:0}}
-
-             />
-          </View>
-            <FlatList
-              data={data}
-              keyboardShouldPersistTaps={'always'}
-              keyExtractor={this._keyExtractor}
-              renderItem={this._renderItem}
-            />
-            <Button
-                style={{
-                  color:'red',
-                  margin:10,
-                  marginHorizontal:20,
-                  height:40,
-                  backgroundColor: "#D72032", borderRadius: 20
-                }}
-                buttonStyle={{
-                  fontSize:14,
-                  color:'white',
-                  backgroundColor:'transparent',
-                  padding:0
-                }}
-              onPress={() => this.props.navigation.goBack()}
-              content="Fermer"
-            />
+    console.log({filters})
+  let data = []
+  return (
+    <View style={{ flex: 1, backgroundColor: 'white', paddingHorizontal: 10, }}>
+      <View
+        style={{
+          alignItems: "center",
+          marginBottom: 24
+        }}>
+        <Icon name={'appelation'} width={64} height={64} />
       </View>
-    );
-  }
+      <Text style={styles.label}>Data-Driven Research</Text>
+      <TextInput
+        styleContainer={{ marginVertical: 10 }}
+        onChange={() => { }}
+        icon='search'
+        placeholder={'Search a Wine'}
+      />
+      <Separator transparent />
+      <Text style={styles.label}>Data-Driven Research</Text>
+      <Separator transparent />
+      <Text style={styles.centeredText}>Wine Color</Text>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: 10 }}>
+
+        {filterArray.map(({ key, value,backgroundColor,color, question }) => {
+          const itemPressed = () => toggleFilter(key);
+          const questionPressed = () => setModal(question);
+          const selected = filters.findIndex(f => f === key) > -1;
+
+          return (
+            <View key={key} style={styles.choiceContainer}>
+              <DefaultButton
+                onPress={itemPressed}
+                label={value}
+                styleContainer={{
+                  ...styles.buttonContainer,
+                  ...(selected && {backgroundColor})
+                }}
+                styleText={{
+                  ...styles.buttonText,
+                  ...(selected && {fontWeight:'600',color})
+                }}
+              />
+              <DefaultButton
+                onPress={questionPressed}
+                label={'?'}
+                styleContainer={styles.questionContainer}
+                styleText={styles.questionText}
+              />
+            </View>
+          )
+
+        })}
+
+    </View>
+    <Separator transparent />
+    <Text style={styles.mainText}>Appelation</Text>
+    <FlatList
+      data={data}
+      keyboardShouldPersistTaps={'always'}
+      keyExtractor={_keyExtractor}
+      renderItem={_renderItem}
+    />
+    </View >
+  );
 }
-export default connect(mapStateToProps,matchDispatchToProps)(Appelation)
+
+
+const styles = StyleSheet.create({
+  label: {
+    fontSize: 14,
+    alignSelf: 'flex-start',
+    color: '#3B3B3D',
+    fontWeight: '300',
+    fontFamily: 'ProximaNova-Regular'
+  },
+  centeredText: {
+    fontSize: 15,
+    alignSelf: 'center',
+    color: '#B2B2B8',
+    fontFamily: 'ProximaNova-Regular'
+  },
+  mainText: {
+    fontSize: 17,
+    alignSelf: 'flex-start',
+    color: '#787882',
+    fontFamily: 'ProximaNova-Semibold'
+  },
+  choiceContainer: {
+    flex: 1,
+    marginHorizontal: 10
+  },
+  buttonContainer: {
+    marginVertical: 0,
+    borderRadius: 14,
+    borderColor: '#787882',
+    borderWidth: 0.4,
+    padding: 0,
+    width: '100%',
+    height: 32,
+    alignItems:'center',
+    backgroundColor: '#F9F6F6'
+  },
+  buttonText: {
+    fontSize: 13,
+    padding:0,
+    fontWeight: 'normal',
+    color: '#787882',
+    fontFamily: 'ProximaNova-regular'
+  },
+  questionContainer: {
+    width: 20,
+    height: 20,
+    padding: 0,
+    backgroundColor: '#F9F6F6'
+  },
+  questionText: {
+    fontWeight: 'normal',
+    color: '#787882',
+    fontFamily: 'ProximaNova-regular',
+    padding: 0,
+    fontSize: 10
+  }
+});
+
+export default Appelation;

@@ -1,138 +1,188 @@
-import React, {Component} from 'react';
-import {FlatList,View,TouchableWithoutFeedback,Keyboard,TouchableOpacity,Modal,ScrollView,Text,Dimensions} from 'react-native';
-import Checkbox from '../markers/checkbox2.js';
-import Button from '../markers/button.js';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Icon from '../markers/icon.js';
-import SearchBar from '../markers/searchbar.js';
-import raw from '../array/cepage'
-import alasql from 'alasql'
-import {bindActionCreators} from 'redux'
-import {setWine,setSearch} from '../../redux/actions'
-import {connect} from 'react-redux'
-function mapStateToProps(state,props){
-  let region = state[props.navigation.search == true ? 'search' : 'wine'].region
-  let cepages = region ? alasql('SELECT DISTINCT cepage, cepage as label  FROM ? WHERE region = "'+region+'" ORDER BY cepage ASC ' ,[raw]) :
-                    alasql('SELECT DISTINCT cepage, cepage as label FROM ? ORDER BY cepage ASC ' ,[raw])
+import React, { useState } from 'react';
+import { FlatList, View, Text, StyleSheet } from 'react-native';
+import DefaultButton from 'components/buttons/defaultButton';
+import Icon from 'components/thumbnails/icon';
+import Separator from 'components/forms/separator';
+import TextInput from 'components/forms/textInput';
+import DefaultListItem from 'components/listItems/defaultListItem.js';
 
-  cepages.forEach((r,index) => r.key = index.toString())
-
-  return{
-    cepages : cepages,
-    search : props.navigation.search == true,
-    selected : state[props.navigation.search == true ? 'search' : 'wine'].cepage || [],
+const filterArray = [
+  {
+    key: 'red',
+    value: 'Red',
+    backgroundColor:'#DC0101',
+    color:'white',
+    question: 'CIYHHKJVBCKJHEF'
+  },
+  {
+    key: 'white',
+    value: 'White',
+    backgroundColor:'#FFFB97',
+    color:'#787882',
+    question: 'CIYHHKJVBCKJHEF'
+  },
+  {
+    key: 'rose',
+    value: 'Rose',
+    color:'white',
+    backgroundColor:'#FF8C85',
+    question: 'CIYHHKJVBCKJHEF'
   }
-}
-function matchDispatchToProps(dispatch){
-  return bindActionCreators({setWine,setSearch}, dispatch)
-}
-class MyListItem extends React.PureComponent {
-  _onPress = () => {
-    this.props.onPressItem(this.props.id);
+]
+const Region = ({ selected }) => {
+  const [filters, setFilters] = useState([])
+  const [modal, setModal] = useState(null)
+  const toggleFilter = (key) => {
+    const index = filters.findIndex(f => f === key)
+    if (index > -1) setFilters(filters.filter(f => f !== key))
+    else setFilters([...filters, key])
+  }
+  const _keyExtractor = (item, index) => item.key.toString();
+
+  const _onPressItem = (id) => {
   };
 
-  render() {
-    const textColor = this.props.selected ? 'black' : '#4c4c4c';
-    return (
-      <TouchableOpacity onPress={this._onPress} >
-        <View style={{flexDirection:'row',alignItems:'center',borderColor:"lightgray",borderBottomWidth:1,paddingVertical:10}}>
-           <Checkbox
-             onPress={this._onPress}
-            checked={this.props.selected}
-          />
-          <Text style={{color: textColor}}>{this.props.title}</Text>
-        </View>
-      </TouchableOpacity>
-    );
-  }
-}
-
-
-class Cepage extends React.PureComponent {
-  constructor(props){
-    super(props)
-    this.state = {search:'',selected: ''};
-    this._onPressItem = this._onPressItem.bind(this)
-  }
-
-
-  _keyExtractor = (item, index) => item.key.toString();
-
-  _onPressItem = (id: string) => {
-
-    Keyboard.dismiss()
-    if (id == -1) {
-      this.props.search ? this.props.setSearch({cepage:[]}) : this.props.setWine({cepage:[]})
-      return
-    }
-    let selected = [...this.props.selected]
-    let index = selected.findIndex(array => array == this.props.cepages[id].cepage)
-    index == -1  ? selected.splice(selected.length, 0,this.props.cepages[id].cepage ) : selected.splice(index, 1 )
-
-    this.props.search ? this.props.setSearch({cepage:selected}) : this.props.setWine({cepage:selected})
-  };
-
-  _renderItem = ({item}) => (
-    <MyListItem
+  const _renderItem = ({ item }) => (
+    <DefaultListItem
       id={item.key}
-      onPressItem={this._onPressItem}
-      selected={this.props.selected.findIndex(array => array == item.cepage) > -1}
+      onPressItem={_onPressItem}
+      selected={selected == item.region}
       title={item.label}
     />
   );
-
-  render() {
-    let data = [{label:'--- Tout Effacer ---',appelation:null,key:-1},...this.props.cepages.filter(r=>  r.cepage.toLowerCase().match((this.state.search ||'').toLowerCase()))]
-
-    return (
-
-      <View style={{flex:1,backgroundColor:'white',paddingTop:30,}}>
-          <View
-            style={{
-
-              flexDirection:'row',
-              alignItems: "center",
-            }}>
-
-            <SearchBar
-              searchIcon ={false}
-              onChangeText={(search)=>this.setState({search})}
-              placeholder='Rechercher'
-              underlineColorAndroid='transparent'
-              autoCorrect = {false}
-              lightTheme
-              autoFocus
-              value={this.state.search}
-              inputContainerStyle={{backgroundColor:'transparent'}}
-              containerStyle={{flex:1,backgroundColor:'transparent',borderBottomWidth:0,borderTopWidth:0}}
-
-             />
-          </View>
-            <FlatList
-              data={data}
-              keyboardShouldPersistTaps={'always'}
-              keyExtractor={this._keyExtractor}
-              renderItem={this._renderItem}
-            />
-            <Button
-                style={{
-                  color:'red',
-                  margin:10,
-                  marginHorizontal:20,
-                  height:40,
-                  backgroundColor: "#D72032", borderRadius: 20
-                }}
-                buttonStyle={{
-                  fontSize:14,
-                  color:'white',
-                  backgroundColor:'transparent',
-                  padding:0
-                }}
-              onPress={() => this.props.navigation.goBack()}
-              content="Fermer"
-            />
+    console.log({filters})
+  let data = []
+  return (
+    <View style={{ flex: 1, backgroundColor: 'white', paddingHorizontal: 10, }}>
+      <View
+        style={{
+          alignItems: "center",
+          marginBottom: 24
+        }}>
+        <Icon name={'region'} width={64} height={64} />
       </View>
-    );
-  }
+      <Text style={styles.label}>Data-Driven Research</Text>
+      <TextInput
+        styleContainer={{ marginVertical: 10 }}
+        onChange={() => { }}
+        icon='search'
+        placeholder={'Search a Wine'}
+      />
+      <Separator transparent />
+      <Text style={styles.label}>Data-Driven Research</Text>
+      <Separator transparent />
+      <Text style={styles.centeredText}>Wine Color</Text>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: 10 }}>
+
+        {filterArray.map(({ key, value,backgroundColor,color, question, underTitle }) => {
+          const itemPressed = () => toggleFilter(key);
+          const questionPressed = () => setModal(question);
+          const selected = filters.findIndex(f => f === key) > -1;
+
+          return (
+            <View key={key} style={styles.choiceContainer}>
+              <DefaultButton
+                onPress={itemPressed}
+                label={value}
+                underTitle={underTitle && <Text style={styles.buttonUnderTitle}>{underTitle}</Text>}
+                styleContainer={{
+                  ...styles.buttonContainer,
+                  ...(selected && {backgroundColor})
+                }}
+                styleText={{
+                  ...styles.buttonText,
+                  ...(selected && {fontWeight:'600',color})
+                }}
+              />
+              <DefaultButton
+                onPress={questionPressed}
+                label={'?'}
+                styleContainer={styles.questionContainer}
+                styleText={styles.questionText}
+              />
+            </View>
+          )
+
+        })}
+
+    </View>
+    <Separator transparent />
+    <Text style={styles.mainText}>Region</Text>
+    <FlatList
+      data={data}
+      keyboardShouldPersistTaps={'always'}
+      keyExtractor={_keyExtractor}
+      renderItem={_renderItem}
+    />
+    </View >
+  );
 }
-export default connect(mapStateToProps,matchDispatchToProps)(Cepage)
+
+
+const styles = StyleSheet.create({
+  label: {
+    fontSize: 14,
+    alignSelf: 'flex-start',
+    color: '#3B3B3D',
+    fontWeight: '300',
+    fontFamily: 'ProximaNova-Regular'
+  },
+  centeredText: {
+    fontSize: 15,
+    alignSelf: 'center',
+    color: '#B2B2B8',
+    fontFamily: 'ProximaNova-Regular'
+  },
+  mainText: {
+    fontSize: 17,
+    alignSelf: 'flex-start',
+    color: '#787882',
+    fontFamily: 'ProximaNova-Semibold'
+  },
+  choiceContainer: {
+    flex: 1,
+    marginHorizontal: 5
+  },
+  buttonContainer: {
+    marginVertical: 0,
+    borderRadius: 14,
+    borderColor: '#787882',
+    borderWidth: 0.4,
+    flexWrap:'wrap',
+    padding: 0,
+    height:'auto',
+    width: '100%',
+    alignItems:'center',
+    backgroundColor: '#F9F6F6'
+  },
+  buttonText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#787882',
+    textAlign:'center',
+    alignItems:'center',
+    fontFamily: 'ProximaNova-regular'
+  },
+  buttonUnderTitle:{
+      fontSize: 14,
+      alignSelf: 'flex-start',
+      color: '#3B3B3D',
+      fontWeight: '300',
+      fontFamily: 'ProximaNova-Regular'
+  },
+  questionContainer: {
+    width: 20,
+    height: 20,
+    padding: 0,
+    backgroundColor: '#F9F6F6'
+  },
+  questionText: {
+    fontWeight: 'normal',
+    color: '#787882',
+    fontFamily: 'ProximaNova-regular',
+    padding: 0,
+    fontSize: 10
+  }
+});
+
+export default Region;

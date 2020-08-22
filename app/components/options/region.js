@@ -1,144 +1,192 @@
-import React, {Component} from 'react';
-import {FlatList,View,TouchableWithoutFeedback,Keyboard,TouchableOpacity,Modal,ScrollView,Text,Dimensions} from 'react-native';
-import Checkbox from '../markers/checkbox2.js';
-import Button from '../markers/button.js';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Icon from '../markers/icon.js';
-import SearchBar from '../markers/searchbar.js';
-import raw from '../array/raw'
-import alasql from 'alasql'
-import {bindActionCreators} from 'redux'
-import {setWine,setSearch} from '../../redux/actions'
-import {connect} from 'react-redux'
-function mapStateToProps(state,props){
-  let {country,region} = state[props.navigation.search == true ? 'search' : 'wine']
-  let regions = !country ? alasql('SELECT *, region as label FROM ? GROUP BY region ORDER BY region ASC ' ,[raw]) : alasql('SELECT *, region as label  FROM ? WHERE country = "'+country+'" GROUP BY region ORDER BY region ASC ' ,[raw])
-  regions.forEach((r,index) => r.key = index)
+import React, { useState } from 'react';
+import { FlatList, View, Text, StyleSheet } from 'react-native';
+import DefaultButton from 'components/buttons/defaultButton';
+import Icon from 'components/thumbnails/icon';
+import Separator from 'components/forms/separator';
+import TextInput from 'components/forms/textInput';
+import DefaultListItem from 'components/listItems/defaultListItem.js';
 
-  return{
-    regions : regions,
-    search : props.navigation.search == true,
-    selected : region
+const filterArray = [
+  {
+    key: 'old',
+    value: 'Old World',
+    underTitle:'Main countries',
+    backgroundColor:'#787882',
+    color:'white',
+    question: 'CIYHHKJVBCKJHEF'
+  },
+  {
+    key: 'new',
+    value: 'New world',
+    underTitle:'Main countries',
+    backgroundColor:'#787882',
+    color:'white',
+    question: 'CIYHHKJVBCKJHEF'
+  },
+  {
+    key: 'other',
+    value: 'Other countries',
+    underTitle: null,
+    backgroundColor:'#787882',
+    color:'white',
+    question: 'CIYHHKJVBCKJHEF'
   }
-}
-function matchDispatchToProps(dispatch){
-  return bindActionCreators({setWine,setSearch}, dispatch)
-}
-class MyListItem extends React.PureComponent {
-  _onPress = () => {
-    this.props.onPressItem(this.props.id);
+]
+const Region = ({ selected }) => {
+  const [filters, setFilters] = useState([])
+  const [modal, setModal] = useState(null)
+  const toggleFilter = (key) => {
+    const index = filters.findIndex(f => f === key)
+    if (index > -1) setFilters(filters.filter(f => f !== key))
+    else setFilters([...filters, key])
+  }
+  const _keyExtractor = (item, index) => item.key.toString();
+
+  const _onPressItem = (id) => {
   };
 
-  render() {
-    const textColor = this.props.selected ? 'black' : '#4c4c4c';
-    return (
-      <TouchableOpacity onPress={this._onPress} >
-        <View style={{flexDirection:'row',alignItems:'center',borderColor:"lightgray",borderBottomWidth:1,paddingVertical:10}}>
-           <Checkbox
-             onPress={this._onPress}
-            checked={this.props.selected}
-          />
-          <Text style={{color: textColor}}>{this.props.title}</Text>
-        </View>
-      </TouchableOpacity>
-    );
-  }
-}
-
-
-class Region extends React.PureComponent {
-
-  constructor(props){
-    super(props)
-    this.state = {search:'',selected: ''};
-    this._onPressItem = this._onPressItem.bind(this)
-    // this.regions = []
-  }
-
-
-  _keyExtractor = (item, index) => item.key.toString();
-
-  _onPressItem = (id: string) => {
-
-    Keyboard.dismiss()
-    let newWine = {
-      region:(id == -1) ? null : this.props.regions[id].region,
-      country : (id == -1) ? null : this.props.regions[id].country,
-    }
-    this.props.search ? this.props.setSearch(newWine) : this.props.setWine(newWine)
-    this.props.navigation.goBack()
-  };
-
-  _renderItem = ({item}) => (
-    <MyListItem
+  const _renderItem = ({ item }) => (
+    <DefaultListItem
       id={item.key}
-      onPressItem={this._onPressItem}
-      selected={this.props.selected == item.region}
+      onPressItem={_onPressItem}
+      selected={selected == item.region}
       title={item.label}
     />
   );
-
-  render() {
-      let data = [{label:'--- Non Applicable ---',region:null,key:-1},...this.props.regions.filter(r=>  r.region.toLowerCase().match((this.state.search ||'').toLowerCase()))]
-
-    return (
-
-      <View style={{flex:1,backgroundColor:'white',paddingTop:30,}}>
-          <View
-            style={{
-              // flex:1,
-              flexDirection:'row',
-              alignItems: "center",
-            }}>
-
-            <SearchBar
-              searchIcon ={false}
-              onChangeText={(search)=>this.setState({search})}
-              placeholder='Rechercher'
-              underlineColorAndroid='transparent'
-              autoCorrect = {false}
-              lightTheme
-              autoFocus
-              value={this.state.search}
-              // showLoading
-              inputContainerStyle={{backgroundColor:'transparent'}}
-              containerStyle={{flex:1,backgroundColor:'transparent',borderBottomWidth:0,borderTopWidth:0}}
-
-             />
-          </View>
-            <FlatList
-              data={data}
-              keyboardShouldPersistTaps={'always'}
-              keyExtractor={this._keyExtractor}
-              renderItem={this._renderItem}
-            />
-            <Button
-                style={{
-                  color:'red',
-                  margin:10,
-                  marginHorizontal:20,
-                  height:40,
-                  backgroundColor: "#D72032", borderRadius: 20
-                }}
-                buttonStyle={{
-                  fontSize:14,
-                  color:'white',
-                  backgroundColor:'transparent',
-                  padding:0
-                }}
-              onPress={() =>{
-                  const {navigation} = this.props
-                  console.log(navigation)
-                  navigation.popToTop();
-                  navigation.goBack(null);
-                  navigation.push('edit_wine')
-                  // navigation.push('edit_wine')
-                 // this.props.navigation.goBack()
-               }}
-              content="Fermer"
-            />
+    console.log({filters})
+  let data = []
+  return (
+    <View style={{ flex: 1, backgroundColor: 'white', paddingHorizontal: 10, }}>
+      <View
+        style={{
+          alignItems: "center",
+          marginBottom: 24
+        }}>
+        <Icon name={'region'} width={64} height={64} />
       </View>
-    );
-  }
+      <Text style={styles.label}>Data-Driven Research</Text>
+      <TextInput
+        styleContainer={{ marginVertical: 10 }}
+        onChange={() => { }}
+        icon='search'
+        placeholder={'Search a Wine'}
+      />
+      <Separator transparent />
+      <Text style={styles.label}>Data-Driven Research</Text>
+      <Separator transparent />
+      <Text style={styles.centeredText}>Wine Color</Text>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: 10 }}>
+
+        {filterArray.map(({ key, value,backgroundColor,color, question, underTitle }) => {
+          const itemPressed = () => toggleFilter(key);
+          const questionPressed = () => setModal(question);
+          const selected = filters.findIndex(f => f === key) > -1;
+
+          return (
+            <View key={key} style={styles.choiceContainer}>
+              <DefaultButton
+                onPress={itemPressed}
+                label={value}
+                underTitle={underTitle && <Text style={{...styles.buttonUnderTitle,...(selected && {color})}}>{underTitle}</Text>}
+                styleContainer={{
+                  ...styles.buttonContainer,
+                  ...(selected && {backgroundColor})
+                }}
+                styleText={{
+                  ...styles.buttonText,
+                  ...(selected && {fontWeight:'600',color})
+                }}
+              />
+              <DefaultButton
+                onPress={questionPressed}
+                label={'?'}
+                styleContainer={styles.questionContainer}
+                styleText={styles.questionText}
+              />
+            </View>
+          )
+
+        })}
+
+    </View>
+    <Separator transparent />
+    <Text style={styles.mainText}>Region</Text>
+    <FlatList
+      data={data}
+      keyboardShouldPersistTaps={'always'}
+      keyExtractor={_keyExtractor}
+      renderItem={_renderItem}
+    />
+    </View >
+  );
 }
-export default connect(mapStateToProps,matchDispatchToProps)(Region)
+
+
+const styles = StyleSheet.create({
+  label: {
+    fontSize: 14,
+    alignSelf: 'flex-start',
+    color: '#3B3B3D',
+    fontWeight: '300',
+    fontFamily: 'ProximaNova-Regular'
+  },
+  centeredText: {
+    fontSize: 15,
+    alignSelf: 'center',
+    color: '#B2B2B8',
+    fontFamily: 'ProximaNova-Regular'
+  },
+  mainText: {
+    fontSize: 17,
+    alignSelf: 'flex-start',
+    color: '#787882',
+    fontFamily: 'ProximaNova-Semibold'
+  },
+  choiceContainer: {
+    flex: 1,
+    marginHorizontal: 5
+  },
+  buttonContainer: {
+    marginVertical: 0,
+    borderRadius: 14,
+    borderColor: '#787882',
+    borderWidth: 0.4,
+    flexWrap:'wrap',
+    padding: 0,
+    height:50,
+    width: '100%',
+    alignItems:'center',
+    backgroundColor: '#F9F6F6'
+  },
+  buttonText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#787882',
+    textAlign:'center',
+    alignItems:'center',
+    justifyContent:'center',
+    fontFamily: 'ProximaNova-regular'
+  },
+  buttonUnderTitle:{
+      fontSize: 14,
+      alignSelf: 'flex-start',
+      color: '#3B3B3D',
+      fontWeight: '300',
+      fontFamily: 'ProximaNova-Regular'
+  },
+  questionContainer: {
+    width: 20,
+    height: 20,
+    padding: 0,
+    backgroundColor: '#F9F6F6'
+  },
+  questionText: {
+    fontWeight: 'normal',
+    color: '#787882',
+    fontFamily: 'ProximaNova-regular',
+    padding: 0,
+    fontSize: 10
+  }
+});
+
+export default Region;

@@ -1,6 +1,7 @@
 import Wine from './wine'
 import Search from './search'
 import Still from './still'
+import Appelation from './appelation'
 import Sparkling from './sparkling'
 import Times from './times'
 import Grape from './grape'
@@ -30,6 +31,7 @@ const svgs = {
   search : Search,
   still : Still,
   times: Times,
+  appelation: Appelation,
   sparkling : Sparkling,
   occasion : Occasion,
   grape : Grape,

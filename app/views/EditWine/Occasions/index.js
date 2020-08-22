@@ -1,10 +1,8 @@
 import React from 'react'
 import {Text,TouchableOpacity,View,Dimensions} from 'react-native';
-import {useDispatch,useSelector} from 'react-redux'
-import {setSearch} from 'reduxStore/actions'
 import Icon from 'components/thumbnails/icon';
 import PropTypes from 'prop-types'
-const {width,height} = Dimensions.get('window')
+const {width} = Dimensions.get('window')
 
 const occasionsArray = [
   {
@@ -60,35 +58,63 @@ const occasionsArray = [
 const Occasions = ({
     backgroundColor,
     activeBackgroundColor,
-    activeBorderColor,
+    occasions,
     textColor,
-    borderColor,
+    toggleItem,
     activeTextColor,
-    onPress,
-    disabled,
     styleContainer,
     style
   }) => {
-  const occasions = useSelector(state => state.search.occasions) || []
-  const dispatch = useDispatch()
-  const toggleItem = (e) => {
-    const index = occasions.findIndex(occ => occ === e.key)
-    if (index === -1) {
-      dispatch(setSearch({['occasions'] :[...occasions,e.key]}))
-    } else {
-      dispatch(setSearch({['occasions'] :[...occasions].filter((_,i) => i !== index)}))
-    }
-  }
-  return (<Occasions 
-    backgroundColor={backgroundColor}
-    activeBackgroundColor={activeBackgroundColor}
-    occasions={occasions}
-    textColor={textColor}
-    toggleItem={toggleItem}
-    activeTextColor={activeTextColor}
-    styleContainer={styleContainer}
-    style={style}
-  />)
+
+  return (
+    <View style={{
+      flexDirection:'row',
+      flexWrap:'wrap',
+      justifyContent:'flex-start',
+      alignItems:'center',
+      marginVertical: 15
+    }}
+    >
+    {occasionsArray.map(e => {
+
+      const isActive = occasions.findIndex(occ => occ === e.key) > -1
+      const onPress = () => toggleItem(e)
+
+      return (
+        <TouchableOpacity
+          key={e.key}
+          onPress={onPress}
+          style={{
+            backgroundColor:!!isActive ? activeBackgroundColor : backgroundColor,
+            alignItems:'center',
+            height:75,
+            width:0.20*width - 5,
+            marginVertical:6,
+            ...styleContainer
+          }} >
+            {e.icon && <View style={{
+              height:43,
+              width:43,
+              borderWidth:0.9,
+              alignItems:'center',
+              justifyContent:'center',
+              borderRadius:200,
+              borderColor:isActive ? '#CACACA' : "#CACACA",
+            }}><Icon name={e.icon} width={35} height={25} /></View>
+            }
+            <Text style={{
+              color:isActive ? activeTextColor : textColor,
+              paddingVertical:5,
+              textAlign:'center',
+              fontSize:12,
+              color:"#787882",
+              ...style
+            }}>{e.title}</Text>
+        </TouchableOpacity>
+      )
+    })}
+    </View>
+  )
 }
 
 Occasions.propTypes = {
