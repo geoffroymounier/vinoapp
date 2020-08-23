@@ -171,7 +171,7 @@ export default class ManagePhoto extends React.PureComponent {
 
 
   render(){
-    let base64 = this.props.photo ? new Buffer(this.props.photo).toString() : null
+    let base64 = this.props.photo // this.props.photo ? new Buffer(this.props.photo).toString() : null
     return(
       <TouchableOpacity
         onPress={()=>{ this.props.photo ? this.manageImage() : this.uploadAvatar()
@@ -192,10 +192,12 @@ export default class ManagePhoto extends React.PureComponent {
             animationType="slide"
             supportedOrientations={["landscape", "portrait"]}
             >
-            <View style={{height}}>
+            <View style={{height,width}}>
             <Image
-              style={{flex:1}}
-              source={{uri: this.props.photo}}
+              style={{height,width}}
+              // style={{flex:1}}
+              source={this.props.photo}
+              // source={{uri: this.props.photo}}
             />
             <TouchableOpacity
               style={{position:'absolute',width,bottom:20,height:50,backgroundColor:"rgba(83, 0, 0,0.9)",alignItems:'center',justifyContent:'center'}}
@@ -217,7 +219,8 @@ export default class ManagePhoto extends React.PureComponent {
       {this.props.photo ?
       <Image
         style={{height:"100%",width:"100%"}}
-        source={{uri: base64}}
+        source={this.props.photo}
+        // source={{uri: base64}}
       />
       :
       <Image

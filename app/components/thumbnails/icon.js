@@ -1,12 +1,14 @@
 import React from 'react'
-import {Image,TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import PropTypes from 'prop-types'
 import svgs from 'assets/svgs'
 
+
 const ImageComponent = ({width,height,source,resizeMode,disabled,style,styleContainer,onPress,name}) => {
-  const SvgFile = svgs[name]
+  const iconCode = svgs[name]
+  const SvgFile = iconCode && iconCode.default ? iconCode.default : iconCode
   return (
-    !svgs[name] ? null :
+    !iconCode ? null :
     <TouchableOpacity
       disabled={disabled}
       onPress={onPress}
@@ -19,6 +21,7 @@ const ImageComponent = ({width,height,source,resizeMode,disabled,style,styleCont
       <SvgFile
         width={width}
         height={height}
+        resizeMode={resizeMode}
       />
     </TouchableOpacity>
 )}

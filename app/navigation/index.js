@@ -42,6 +42,7 @@ import Region from '../components/options/region'
 import Country from '../components/options/country'
 import Appelation from '../components/options/appelation'
 import Cepage from '../components/options/cepage'
+import Price from '../components/options/price'
 import Annee from '../components/options/annee'
 import Accords from '../components/options/accords'
 import Aromes from '../components/options/aromes'
@@ -86,6 +87,7 @@ const ChooseAddWineMethodModal = () => (
       <Stack.Screen name='edit_wine' component={EditWineStack} />
       <Stack.Screen name={'choseCellar'} component={ChoseCellar} />
       <Stack.Screen name={'region'}  component={Region} />
+      <Stack.Screen name={'price'}  component={Price} />
       <Stack.Screen name={'country'} component={Country} />
       <Stack.Screen name={'appelation'} component={Appelation} />
       <Stack.Screen name={'cepage'} component={Cepage} />

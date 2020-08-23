@@ -72,7 +72,7 @@ const Occasions = ({
       flexWrap:'wrap',
       justifyContent:'flex-start',
       alignItems:'center',
-      marginVertical: 15
+      marginVertical: 15,
     }}
     >
     {occasionsArray.map(e => {

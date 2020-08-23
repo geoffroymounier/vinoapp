@@ -1,10 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import LinearGradient from 'react-native-linear-gradient'
-import { Button, Platform, Alert, StyleSheet, Text, View, Image, ScrollView, KeyboardAvoidingView, Picker, TouchableOpacity } from 'react-native';
+import { Button, Platform, Alert, StyleSheet, Text, View, Image, ScrollView, KeyboardAvoidingView, Picker, TouchableOpacity, Dimensions } from 'react-native';
 import ImageComponent from 'components/forms/image'
 import ModalSingleChoice from '../components/modals/modalSingleChoice.js'
 import ModalPhotoChoice from '../components/modals/modalPhotoChoice.js'
 import RNPickerSelect from 'react-native-picker-select';
+import Icon from 'components/thumbnails/icon';
+import Header from 'components/thumbnails/header';
 import ManagePhoto from '../components/modals/managePhoto'
 import TouchableTextInput from '../components/forms/touchableTextInput'
 import TextInput from '../components/forms/textInput'
@@ -26,8 +28,7 @@ import Occasions from './EditWine/Occasions'
 import MomentPastille from 'components/thumbnails/moment';
 import { setWine } from 'reduxStore/actions'
 import { saveWine } from '../functions/api'
-
-
+import testLabel from 'assets/test-label.png'
 const EditWine = ({ navigation, route }) => {
   const dispatch = useDispatch()
   const [modalColor, setModalColor] = useState('')
@@ -38,7 +39,6 @@ const EditWine = ({ navigation, route }) => {
   const cellarId = useSelector(state => state.cellar._id)
   const triggerSaveWine = (wine) => dispatch(saveWine(wine))
   const triggerSetWine = (wine) => dispatch(setWine(wine))
-
   const initialWine = useRef(JSON.stringify(wine))
   const domainRef = useRef()
   const typologieRef = useRef()
@@ -47,7 +47,6 @@ const EditWine = ({ navigation, route }) => {
   const priceRef = useRef()
   const stocksRef = useRef()
   const commentaireRef = useRef()
-
   const checkLeave = () => {
     triggerSaveWine({ ...wine, cellarId }, wine._id)
     navigation.goBack()
@@ -80,7 +79,6 @@ const EditWine = ({ navigation, route }) => {
       }
     })
   }, [JSON.stringify(wine)])
-
   const {
     favorite = false,
     cepage = [],
@@ -96,13 +94,9 @@ const EditWine = ({ navigation, route }) => {
     annee,
     before,
     apogee, typologie, temperature, cuisine_monde, price, vendor, terrain, stock, nez, legumes, viandes, poissons, desserts, aperitif, fromages, bouche, color, domain, carafage, commentaire, photo } = wine
-
-
   const backgroundTextColor = (colors[color] || {}).color == '#FFC401' ? '#939393' : 'white'
   const backgroundColor = (colors[color] || {}).color || '#e6e6e6'
-
   return (
-
     <KeyboardAvoidingView behavior='position' keyboardShouldPersistTaps="always" >
       {!!modalColor &&
         <ModalSingleChoice
@@ -128,7 +122,6 @@ const EditWine = ({ navigation, route }) => {
             setChoices([])
           }} />
       }
-
       <ScrollView keyboardShouldPersistTaps="always" keyboardDismissMode="on-drag" style={{ padding: 0, backgroundColor: 'white' }}>
         <View style={{ margin: 5, borderRadius: 5, backgroundColor: '#F9F6F6', borderColor: '#787882', borderWidth: 1, justifyContent: 'center' }}>
           <TextInput
@@ -168,44 +161,86 @@ const EditWine = ({ navigation, route }) => {
                 }}
                 // appelations = {this.appelations}
                 addPicture={(photo) => triggerSetWine({ photo })}
-                photo={photo} />
+                photo={testLabel} />
             </View>
-            <View style={{ flex: 4 }}>
-              <View style={{ flexDirection: 'row', padding: 10, justifyContent: 'space-between' }}>
-                <ImageComponent
-                  onPress={() => navigation.navigate('country')}
-                  disabled={false}
-                  height={32}
-                  width={32}
-                  source={countries[country] || countries['france']}
-                />
-                <ImageComponent
-
-                  onPress={() => triggerSetWine({ favorite: !favorite })}
-                  disabled={false}
-                  height={32}
-                  width={32}
-                  source={favorite ? heartFull : heartEmpty}
-                />
-              </View>
+            <View style={{ flex: 4, paddingLeft: 10 }}>
               <TouchableTextInput
-                label={'Couleur'}
+                icon={<Icon
+                  height={22}
+                  width={22}
+                  name={'wineGlass'}
+                />}
                 value={color}
                 placeholder={''}
                 onPress={() => setModalColor('modalColor')}
               />
-              <DropDownTextInput
+              <TouchableTextInput
+                value={region}
+                icon={<ImageComponent
+                  disabled
+                  height={20}
+                  width={20}
+                  source={countries[country] || countries['france']}
+                />}
+                placeholder={'Region'}
+                onPress={() => navigation.push('region')}
+              />
+              <TouchableTextInput
+                icon={<Icon
+                  height={22}
+                  width={22}
+                  name={'vintage_1'}
+                />}
+                value={annee}
+                placeholder={'Vintage'}
+                onPress={() => setModalColor('modalColor')}
+              />
+              <TouchableTextInput
+                icon={<Icon
+                  height={22}
+                  width={22}
+                  name={'price_1'}
+                />}
+                value={price}
+                placeholder={'Price'}
+                onPress={() => navigation.push('price')}
+              />
+              <TouchableTextInput
+                icon={<Icon
+                  height={22}
+                  width={22}
+                  name={'bottleNumber'}
+                />}
+                value={stock}
+                placeholder={'Quantity'}
+                onPress={() => setModalColor('modalColor')}
+              />
+              <TouchableTextInput
+                icon={<Icon
+                  height={22}
+                  width={22}
+                  name={'volume_1'}
+                />}
+                value={stock}
+                placeholder={'Volume'}
+                onPress={() => setModalColor('modalColor')}
+              />
+              <TouchableTextInput
+                icon={<Icon
+                  height={22}
+                  width={22}
+                  name={'best_moment_3'}
+                />}
+                value={stock}
+                placeholder={'Drink time'}
+                onPress={() => setModalColor('modalColor')}
+              />
+              {/* <DropDownTextInput
                 label={'Typologie'}
                 value={typologie}
                 items={makeTypologieArray()}
                 placeholder={''}
                 onChange={(typologie) => triggerSetWine({ typologie })}
-              />
-              <TouchableTextInput
-                label={'Region'}
-                value={region}
-                placeholder={''}
-                onPress={() => navigation.push('region')}
               />
               <TouchableTextInput
                 label={"Jusqu'a"}
@@ -226,72 +261,188 @@ const EditWine = ({ navigation, route }) => {
                 items={temperatureArray()}
                 placeholder={'Non Précisé'}
                 onChange={(temperature) => triggerSetWine({ temperature })}
-              />
+              /> */}
             </View>
           </View>
-
-
-
-          <View style={{ ...styles.container, paddingHorizontal: 0, flexDirection: 'row', alignItems: 'flex-start', backgroundColor: "#F5F5F5" }}>
+          <View style={{ ...styles.container, paddingHorizontal: 0, flexDirection: 'row', alignItems: 'flex-start' }}>
             <View style={{ ...styles.container }}>
-            <Occasions 
-                occasions={pastilles}
-                toggleItem={()=>{}}
-              />
-              {/* <TouchableOpacity onPress={() => navigation.navigate('pastilles')} style={{ ...styles.TouchableOpacity, marginVertical: 5, flexWrap: 'wrap', justifyContent: 'flex-start', backgroundColor: 'transparent' }}>
-                {(pastilles || ['Moments parfaits']).map((e, i) => (
-                  <MomentPastille
-                    key={i.toString()}
-                    value={e}
-                    backgroundColor={backgroundColor}
-                    textColor={backgroundTextColor}
-                    style={{ margin: 10 }}
+              <Header
+                styleContainer={{
+                  backgroundColor: 'transparent',
+                  marginTop: 10
+                }}
+                styleHeaderTitle={{
+                  marginLeft: 10,
+                  textAlign: 'left',
+                  color: '#3B3B3D'
+                }} showHide text={'Occasions'}>
+                <Occasions
+                  occasions={pastilles}
+                  toggleItem={() => { }}
+                />
+              </Header>
+              <Header showHide text={'Comments'}>
+                <TextInput
+                  onChange={() => { }}
+                  placeholder={'...'}
+                  numberOfLines={4}
+                  styleContainer={{ marginHorizontal: -1, borderRadius: 0 }}
+                  icon={'modify_2'}
+                />
+              </Header>
+              <Header showHide text={'Wine Details'} >
+                <View style={{ ...styles.container, ...styles.sectionContainer }}>
+                  <TouchableTextInput
+                    icon={<Icon
+                      height={22}
+                      width={22}
+                      name={'appellation_2'}
+                    />}
+                    value={price}
+                    placeholder={'Appellation'}
+                    onPress={() => setModalColor('modalColor')}
                   />
-                )
-                )}
-              </TouchableOpacity> */}
-              <TouchableTitleText
-                label={'Indication Geographique'}
-                value={`${appelation ? `${appelation}, ${region}` : ''}`}
-                placeholder={"Indication Géographique"}
-                onPress={()=>navigation.navigate('appelation')}
-              />
-              <TouchableTitleText
-                label={'Cépages'}
-                value={cepage}
-                placeholder={""}
-                onPress={() => navigation.navigate('cepage')}
-              />
-              <SliderInput
-                label={'Prix :'}
-                value={price}
-                items={makePriceArray()}
-                placeholder={0}
-                color={(colors[color] || {}).color}
-                suffix={"€"}
-                onChange={(price) => triggerSetWine({ price })}
-              />
-              <View style={{ flexDirection: 'row' }}>
-                <TouchableTitleText
-                  label={'Millésime'}
-                  value={annee}
-                  placeholder={""}
-                  onPress={() => navigation.navigate('annee', { keyValue: 'annee' })}
-                />
-                <TouchableTitleText
-                  label={'Millésime'}
-                  value={annee}
-                  placeholder={""}
-                  onPress={() => navigation.navigate('annee', { keyValue: 'annee' })}
-                />
-              </View>
-
-
-              <View style={{ ...styles.container, marginVertical: 20 }}>
-                <Text style={{ ...styles.title, fontSize: 26, color: "#6D6D6D" }}>{'Accords'}</Text>
-              </View>
-
-              {Object.keys(accordsValues).map((accords, i) => {
+                  <TouchableTextInput
+                    icon={<Icon
+                      height={22}
+                      width={22}
+                      name={'grape_1'}
+                    />}
+                    value={stock}
+                    placeholder={'Grape Variety'}
+                    onPress={() => setModalColor('modalColor')}
+                  />
+                  <TouchableTextInput
+                    icon={<Icon
+                      height={22}
+                      width={22}
+                      name={'winemaker_1'}
+                    />}
+                    value={stock}
+                    placeholder={'Wine Maker'}
+                    onPress={() => setModalColor('modalColor')}
+                  />
+                  <TouchableTextInput
+                    icon={<Icon
+                      height={22}
+                      width={22}
+                      name={'label_3'}
+                    />}
+                    value={stock}
+                    placeholder={'Label'}
+                    onPress={() => setModalColor('modalColor')}
+                  />
+                  <TouchableTextInput
+                    icon={<Icon
+                      height={22}
+                      width={22}
+                      name={'ranking_2'}
+                    />}
+                    value={stock}
+                    placeholder={'Rank & Distinction'}
+                    onPress={() => setModalColor('modalColor')}
+                  />
+                  <TouchableTextInput
+                    icon={<Icon
+                      height={22}
+                      width={22}
+                      name={'alcohol_3'}
+                    />}
+                    value={stock}
+                    placeholder={'Alcohol degree'}
+                    onPress={() => setModalColor('modalColor')}
+                  />
+                  <TouchableTextInput
+                    icon={<Icon
+                      height={22}
+                      width={22}
+                      name={'ageing_2'}
+                    />}
+                    value={stock}
+                    placeholder={'Oak Ageing'}
+                    onPress={() => setModalColor('modalColor')}
+                  />
+                </View>
+              </Header>
+              <Header showHide text={'Service recommendations'} >
+                <View style={{ ...styles.container, ...styles.sectionContainer }}>
+                  <TouchableTextInput
+                    icon={<Icon
+                      height={22}
+                      width={22}
+                      name={'decanting_1'}
+                    />}
+                    value={stock}
+                    placeholder={'Decanting'}
+                    onPress={() => setModalColor('modalColor')}
+                  />
+                  <TouchableTextInput
+                    icon={<Icon
+                      height={22}
+                      width={22}
+                      name={'thermo_4'}
+                    />}
+                    value={stock}
+                    placeholder={'Service Temperature'}
+                    onPress={() => setModalColor('modalColor')}
+                  />
+                  <TouchableTextInput
+                    icon={<Icon
+                      height={22}
+                      width={22}
+                      name={'keep_4'}
+                    />}
+                    value={stock}
+                    placeholder={'Keep until / Drink Between'}
+                    onPress={() => setModalColor('modalColor')}
+                  />
+                  <TouchableTextInput
+                    icon={<Icon
+                      height={22}
+                      width={22}
+                      name={'food_1'}
+                    />}
+                    value={stock}
+                    placeholder={'Food Pairing'}
+                    onPress={() => setModalColor('modalColor')}
+                  />
+                </View>
+              </Header>
+              <Header showHide text={'About the acquisition'}>
+                <View style={{ ...styles.container, ...styles.sectionContainer }}>
+                  <TouchableTextInput
+                    icon={<Icon
+                      height={22}
+                      width={22}
+                      name={'date_1'}
+                    />}
+                    value={stock}
+                    placeholder={'Date of acquisition'}
+                    onPress={() => setModalColor('modalColor')}
+                  />
+                  <TouchableTextInput
+                    icon={<Icon
+                      height={22}
+                      width={22}
+                      name={'basket_1'}
+                    />}
+                    value={stock}
+                    placeholder={'Type of acquisition'}
+                    onPress={() => setModalColor('modalColor')}
+                  />
+                  <TouchableTextInput
+                    icon={<Icon
+                      height={22}
+                      width={22}
+                      name={'supplier_1'}
+                    />}
+                    value={stock}
+                    placeholder={'Supplier'}
+                    onPress={() => setModalColor('modalColor')}
+                  />
+                </View>
+              </Header>
+              {/* {Object.keys(accordsValues).map((accords, i) => {
                 const { icon, label } = accordsValues[accords]
                 return (
                   <TouchableTitleText
@@ -323,7 +474,6 @@ const EditWine = ({ navigation, route }) => {
                 )
               }
               )}
-
               <TouchableOpacity style={{ ...styles.TouchableOpacity, flexWrap: 'wrap', justifyContent: 'flex-start', alignItems: 'center', marginVertical: 5, backgroundColor: 'white' }}>
                 <Text style={styles.label}>Sucrosité</Text>
                 <MultiSlider
@@ -341,7 +491,6 @@ const EditWine = ({ navigation, route }) => {
                 />
               </TouchableOpacity>
               <TouchableOpacity style={{ ...styles.TouchableOpacity, flexWrap: 'wrap', justifyContent: 'flex-start', alignItems: 'center', marginVertical: 5, backgroundColor: 'white' }}>
-
                 <Text style={styles.label}>Acidité</Text>
                 <MultiSlider
                   min={0}
@@ -357,7 +506,6 @@ const EditWine = ({ navigation, route }) => {
                   onValuesChangeFinish={(e) => triggerSetWine({ acide: e[0] })}
                 />
               </TouchableOpacity>
-
               <TouchableOpacity style={{ ...styles.TouchableOpacity, flexWrap: 'wrap', justifyContent: 'flex-start', alignItems: 'center', marginVertical: 5, backgroundColor: 'white' }}>
                 <Text style={styles.label}>Tanins</Text>
                 <MultiSlider
@@ -373,7 +521,6 @@ const EditWine = ({ navigation, route }) => {
                   max={6}
                   onValuesChangeFinish={(e) => triggerSetWine({ tanin: e[0] })}
                 />
-
               </TouchableOpacity>
               <TouchableOpacity style={{ ...styles.TouchableOpacity, flexWrap: 'wrap', justifyContent: 'flex-start', alignItems: 'center', marginVertical: 5, backgroundColor: 'white' }}>
                 <Text style={styles.label}>Corps</Text>
@@ -390,10 +537,8 @@ const EditWine = ({ navigation, route }) => {
                   max={6}
                   onValuesChangeFinish={(e) => triggerSetWine({ corps: e[0] })}
                 />
-
               </TouchableOpacity>
               <TouchableOpacity style={{ ...styles.TouchableOpacity, flexWrap: 'wrap', justifyContent: 'flex-start', alignItems: 'center', marginVertical: 5, backgroundColor: 'white' }}>
-
                 <Text style={styles.label}>Longueur</Text>
                 <MultiSlider
                   min={0}
@@ -408,16 +553,13 @@ const EditWine = ({ navigation, route }) => {
                   max={8}
                   onValuesChangeFinish={(e) => triggerSetWine({ longueur: e[0] })}
                 />
-
               </TouchableOpacity>
-
               <View style={{ ...styles.container, marginVertical: 20 }}>
                 <Text style={{ ...styles.title, fontSize: 26, color: "#6D6D6D" }}>{'Commentaires'}</Text>
               </View>
               <TouchableOpacity
                 onPress={() => commentaireRef.focus()}
                 style={{ ...styles.TouchableOpacity, flexWrap: 'wrap', justifyContent: 'flex-start', alignItems: 'center', paddingVertical: 10, marginVertical: 5, backgroundColor: 'white' }}>
-
                 {/* <TextInput
                 ref={commentaireRef}
                 style={{flex:1,padding:10,marginBottom:30}}
@@ -425,22 +567,12 @@ const EditWine = ({ navigation, route }) => {
                 value={commentaire}
                 placeholder='Insérez vos notes'
                 onChangeText={(commentaire)=>triggerSetWine({commentaire})}/> */}
-
-
-              </TouchableOpacity>
-
-
+              {/* </TouchableOpacity> */}
             </View>
           </View>
         </View>
-
       </ScrollView>
-
-    </KeyboardAvoidingView>
-
-
-
-
+    </KeyboardAvoidingView >
   );
 }
 const pickerStyle = {
@@ -454,12 +586,13 @@ const styles = StyleSheet.create({
     padding: 6,
     marginVertical: 5, backgroundColor: 'white'
   },
+  sectionContainer: {
+    paddingHorizontal: 10,
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-
-
   },
   domain: {
     fontSize: 14,
@@ -477,7 +610,5 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     margin: 5
   }
-
 });
-
 export default EditWine
