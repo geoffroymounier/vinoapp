@@ -43,6 +43,8 @@ import Country from '../components/options/country'
 import Appelation from '../components/options/appelation'
 import Cepage from '../components/options/cepage'
 import Price from '../components/options/price'
+import Alcohol from '../components/options/alcohol'
+import Quantity from '../components/options/quantity'
 import Annee from '../components/options/annee'
 import Accords from '../components/options/accords'
 import Aromes from '../components/options/aromes'
@@ -50,6 +52,7 @@ import Pastilles from '../components/options/pastilles'
 import ChoseCellar from '../components/options/choseCellar'
 import Filter from '../views/filter'
 import Search from '../views/Search'
+
 // import Profile from '../views/profile'
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -87,6 +90,9 @@ const ChooseAddWineMethodModal = () => (
       <Stack.Screen name='edit_wine' component={EditWineStack} />
       <Stack.Screen name={'choseCellar'} component={ChoseCellar} />
       <Stack.Screen name={'region'}  component={Region} />
+      <Stack.Screen name={'quantity'}  component={Quantity} />
+      
+
       <Stack.Screen name={'price'}  component={Price} />
       <Stack.Screen name={'country'} component={Country} />
       <Stack.Screen name={'appelation'} component={Appelation} />
@@ -321,6 +327,7 @@ const AppContainer = () => (
       <Stack.Screen name={'authLoading'} component={AuthLoading}/>
       <Stack.Screen name={'login_views'}>{LoginViews}</Stack.Screen>
       <Stack.Screen name={'stack_wine'}>{StackWine}</Stack.Screen>
+      <Stack.Screen name={'alcolhol'}  component={Alcohol} />
       <Stack.Screen name={'ftu_open'}>{FirstTimeOpen}</Stack.Screen>
     </Stack.Navigator>
   </NavigationContainer>

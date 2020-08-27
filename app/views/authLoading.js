@@ -25,6 +25,8 @@ const AuthLoading = ({navigation,route}) => {
   }
   const checkIfAuthenticated = async () => {
     let currentSession = null;
+    navigation.replace('alcolhol');
+    return
     try {
       currentSession = await Auth.currentSession();
     } catch(err) {
@@ -37,7 +39,7 @@ const AuthLoading = ({navigation,route}) => {
       navigation.push('ftu_open')
     } else {
       console.log("move to 'stack wine'")
-      navigation.replace(currentSession ? 'stack_wine' : 'login_views');
+      navigation.replace(currentSession ? 'alcolhol' : 'login_views');
     }
     },1000)
   };

@@ -213,7 +213,7 @@ const EditWine = ({ navigation, route }) => {
                 />}
                 value={stock}
                 placeholder={'Quantity'}
-                onPress={() => setModalColor('modalColor')}
+                onPress={() => navigation.push('quantity')}
               />
               <TouchableTextInput
                 icon={<Icon
