@@ -1,117 +1,176 @@
-import React, {Component} from 'react';
-import {FlatList,View,TouchableWithoutFeedback,Keyboard,TouchableOpacity,Modal,ScrollView,Text,Dimensions} from 'react-native';
-import Checkbox from '../markers/checkbox2.js';
-import Button from '../markers/button.js';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Icon from '../markers/icon.js';
-import {makeYearArray} from '../array/pickers'
-import {bindActionCreators} from 'redux'
-import {setWine,setSearch} from '../../redux/actions'
-import {connect} from 'react-redux'
-function mapStateToProps(state,props){
-  let key = props.navigation.keyValue
-  return{
-    selected : state[props.navigation.search == true ? 'search' : 'wine'][key],
-    search : props.navigation.search == true,
-    apogee : state[props.navigation.search == true ? 'search' : 'wine'].apogee
+import React, { useState, useRef } from 'react';
+import { FlatList, View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import DefaultButton from 'components/buttons/defaultButton';
+import Icon from 'components/thumbnails/icon';
+import Separator from 'components/forms/separator';
+import TextInput from 'components/forms/textInput';
+
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import HorizontalCarousel from '../listItems/horizontalCarousel';
+const { width, height } = Dimensions.get('window')
+
+const filterArray = [
+  {
+    key: 'year',
+    value: 'One specific year',
+    color: 'white',
+    backgroundColor: '#787882'
+  },
+  {
+    key: 'range',
+    value: 'Time Period',
+    color: 'white',
+    backgroundColor: '#787882'
   }
-}
-function matchDispatchToProps(dispatch){
-  return bindActionCreators({setWine,setSearch}, dispatch)
-}
-class MyListItem extends React.PureComponent {
-  _onPress = () => {
-    this.props.onPressItem(this.props.title);
-  };
-
-  render() {
-    const textColor = this.props.selected ? 'black' : '#4c4c4c';
-    return (
-      <TouchableOpacity onPress={this._onPress} >
-        <View style={{flexDirection:'row',alignItems:'center',borderColor:"lightgray",borderBottomWidth:1,paddingVertical:10}}>
-           <Checkbox
-            onPress={this._onPress}
-            checked={this.props.selected}
-          />
-          <Text style={{color: textColor}}>{this.props.title}</Text>
-        </View>
-      </TouchableOpacity>
-    );
+]
+const Annee = ({ selected }) => {
+  const START_VALUE = 1990
+  const [valueMin, setValueMin] = useState(0)
+  const [valueMax, setValueMax] = useState(0)
+  const [filters, setFilters] = useState('year')
+  const toggleFilter = (key) => {
+    setFilters(key)
+    if (key === 'year') setValueMax(valueMin)
   }
-}
-
-
-class Annee extends React.PureComponent {
-  constructor(props){
-    super(props)
-    this.state = {selected: ''};
-    this._onPressItem = this._onPressItem.bind(this)
-    this.annee = makeYearArray().sort((a,b) => {
-      return b.key > a.key ? 1 : -1
-    })
-    if (props.navigation.keyValue == 'annee') {
-      let year = new Date(Date.now())
-      this.annee = this.annee.filter(y =>  y.key <= year.getFullYear())
-    } else if (props.navigation.keyValue == 'apogee') {
-      this.annee = this.annee.filter(y =>  y.key >= (props.annee || 0))
-    } else if (props.navigation.keyValue == 'before') {
-      this.annee = this.annee.filter(y =>  y.key >= Math.max(props.annee || 0,props.apogee||0))
-    }
-  }
-
-
-  _keyExtractor = (item, index) => item.label;
-
-  _onPressItem = (title: string) => {
-
-    Keyboard.dismiss()
-    let keyValue = this.props.navigation.keyValue
-
-    this.props.search ? this.props.setSearch({[keyValue]:title}) : this.props.setWine({[keyValue]:title})
-    this.props.navigation.goBack()
-  };
-
-  _renderItem = ({item}) => (
-    <MyListItem
-      id={item.key}
-      onPressItem={this._onPressItem}
-      selected={this.props.selected == item.label}
-      title={item.label}
-    />
-  );
-
-  render() {
-    let data = this.annee
-
-    return (
-
-      <View style={{flex:1,backgroundColor:'white',paddingTop:30,}}>
-
-            <FlatList
-              data={data}
-              keyboardShouldPersistTaps={'always'}
-              keyExtractor={this._keyExtractor}
-              renderItem={this._renderItem}
-            />
-            <Button
-                style={{
-                  color:'red',
-                  margin:10,
-                  marginHorizontal:20,
-                  height:40,
-                  backgroundColor: "#D72032", borderRadius: 20
-                }}
-                buttonStyle={{
-                  fontSize:14,
-                  color:'white',
-                  backgroundColor:'transparent',
-                  padding:0
-                }}
-              onPress={() => this.props.navigation.goBack()}
-              content="Fermer"
-            />
+  let data = [...Array(30).keys()].map(year => ({ "key": (START_VALUE + year).toString() }))
+  return (
+    <View style={{ flex: 1, backgroundColor: 'white', paddingHorizontal: 10, paddingTop: 45 }}>
+      <View
+        style={{
+          alignItems: "center",
+          marginBottom: 24
+        }}>
+        <Icon name={'best_moment_3'} width={85} height={85} />
       </View>
-    );
-  }
+
+      <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: 10 }}>
+
+        {filterArray.map(({ key, value, backgroundColor, color, underTitle }) => {
+          const itemPressed = () => toggleFilter(key);
+          
+          const selected = filters === key
+
+          return (
+            <DefaultButton
+              key={key}
+              onPress={itemPressed}
+              label={value}
+              underTitle={underTitle && <Text style={styles.buttonUnderTitle}>{underTitle}</Text>}
+              styleContainer={{
+                ...styles.buttonContainer,
+                ...(selected && { backgroundColor })
+              }}
+              styleText={{
+                ...styles.buttonText,
+                ...(selected && { fontWeight: '600', color })
+              }}
+            />
+          )
+
+        })}
+
+      </View>
+      {filters === 'year' ?
+        <View style={{ ...styles.choiceContainer }}>
+          <Separator transparent />
+          <Text style={styles.mainText}> </Text>
+          <Separator transparent />
+          <HorizontalCarousel
+            listenToScrollMomentum
+            scrollEventThrottle={300}
+            defaultValue={valueMin}
+            data={data}
+            onChange={(value) => {
+              setValueMin(value)
+              setValueMax(value)
+            }} />
+        </View>
+        :
+        <View style={{ ...styles.choiceContainer }}>
+          <Separator transparent />
+          <Text style={styles.mainText}>Start</Text>
+          <Separator transparent />
+          <HorizontalCarousel
+            listenToScrollMomentum
+            scrollEventThrottle={300}
+            defaultValue={valueMin}
+            data={data}
+            onChange={(value) => setValueMin(value)} />
+          <Separator transparent />
+          <Text style={styles.mainText}>End</Text>
+          <Separator transparent />
+          <HorizontalCarousel
+            listenToScrollMomentum
+            scrollEventThrottle={200}
+            defaultValue={Math.max(valueMin, valueMax)}
+            data={data}
+            onChange={(value) => setValueMax(Math.max(valueMin, value))} />
+        </View>
+      }
+      <View style={styles.bottomContainer}>
+        <View style={styles.choiceContainer}><Text style={styles.labelText}>Best moment to drink</Text></View>
+        <View style={styles.choiceContainer}><Text style={{ ...styles.label }}>{valueMin >= valueMax ? START_VALUE + valueMin : `${START_VALUE + valueMin} - ${START_VALUE + valueMax}`}</Text></View>
+      </View>
+    </View >
+  );
 }
-export default connect(mapStateToProps,matchDispatchToProps)(Annee)
+
+
+const styles = StyleSheet.create({
+  label: {
+    fontSize: 18,
+    alignSelf: 'center',
+    color: '#3B3B3D',
+    fontFamily: 'ProximaNova-Semibold'
+  },
+  labelText: {
+    fontSize: 15,
+    flex: 1,
+    color: '#787882',
+    fontFamily: 'ProximaNova-Regular'
+  },
+  mainText: {
+    fontSize: 17,
+    alignSelf: 'center',
+    color: '#787882',
+    fontFamily: 'ProximaNova-Semibold'
+  },
+  bottomContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 75
+  },
+  choiceContainer: {
+    flex: 1,
+    marginHorizontal: 5
+  },
+  buttonContainer: {
+    marginVertical: 0,
+    borderRadius: 14,
+    borderColor: '#787882',
+    borderWidth: 0.4,
+    flexWrap: 'wrap',
+    padding: 0,
+    height: 'auto',
+    width: '40%',
+    alignItems: 'center',
+    backgroundColor: '#F9F6F6'
+  },
+  buttonText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#787882',
+    textAlign: 'center',
+    alignItems: 'center',
+    fontFamily: 'ProximaNova-regular'
+  },
+  buttonUnderTitle: {
+    fontSize: 14,
+    alignSelf: 'flex-start',
+    color: '#3B3B3D',
+    fontWeight: '300',
+    fontFamily: 'ProximaNova-Regular'
+  }
+});
+
+export default Annee;

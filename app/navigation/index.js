@@ -327,7 +327,7 @@ const AppContainer = () => (
       <Stack.Screen name={'authLoading'} component={AuthLoading}/>
       <Stack.Screen name={'login_views'}>{LoginViews}</Stack.Screen>
       <Stack.Screen name={'stack_wine'}>{StackWine}</Stack.Screen>
-      <Stack.Screen name={'alcolhol'}  component={Alcohol} />
+      <Stack.Screen name={'alcolhol'}  component={Annee} />
       <Stack.Screen name={'ftu_open'}>{FirstTimeOpen}</Stack.Screen>
     </Stack.Navigator>
   </NavigationContainer>
