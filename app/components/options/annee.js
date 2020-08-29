@@ -1,6 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FlatList, View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import DefaultButton from 'components/buttons/defaultButton';
+import {getRegions} from 'functions/api';
 import Icon from 'components/thumbnails/icon';
 import Separator from 'components/forms/separator';
 import TextInput from 'components/forms/textInput';
@@ -33,6 +34,14 @@ const Annee = ({ selected }) => {
     if (key === 'year') setValueMax(valueMin)
   }
   let data = [...Array(30).keys()].map(year => ({ "key": (START_VALUE + year).toString() }))
+  useEffect(()=>{
+    const getData = async () => {
+      const response = await getRegions({country:'fr'})
+      console.log(response)
+    }
+    getData()
+   
+  },[])
   return (
     <View style={{ flex: 1, backgroundColor: 'white', paddingHorizontal: 10, paddingTop: 45 }}>
       <View
