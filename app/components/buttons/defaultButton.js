@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Icon from 'components/thumbnails/icon';
 import { TouchableOpacity, Text, StyleSheet, View } from 'react-native'
 
-const DefaultButton = ({ label, icon, backgroundColor, textColor, styleIcon, styleContainer,underTitle, styleText, disabled, onPress }) => (
+const DefaultButton = ({ label, icon, roundedIcon,backgroundColor, textColor, styleIcon, styleContainer,underTitle, styleText, disabled, onPress }) => (
   <TouchableOpacity
     style={{
       ...styles.buttonView,
@@ -14,18 +14,19 @@ const DefaultButton = ({ label, icon, backgroundColor, textColor, styleIcon, sty
     onPress={onPress}
   >
     {icon && <Icon
-      width={20}
-      height={20}
-      styleContainer={{ ...styleIcon.container }}
+      width={roundedIcon ? 64 : 20}
+      height={roundedIcon ? undefined : 20}
+      styleContainer={{...(roundedIcon && styles.roundedIcon),...styleIcon.container }}
       style={{ ...styleIcon.icon }}
       name={icon} />
     }
     {underTitle ?  
       <View style={{
-        ...styles.buttonText,
         color: textColor,
+        ...styles.buttonText,
         ...styleText,
         flexDirection:'column',
+        
       }}>
       <Text style={{...styleText}}>{label}
       </Text>
@@ -50,11 +51,13 @@ DefaultButton.propTypes = {
   textColor: PropTypes.string,
   underTitle:PropTypes.object,
   onPress: PropTypes.func,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  roundedIcon: PropTypes.bool
 }
 DefaultButton.defaultProps = {
   label: '',
   backgroundColor: '#9F041B',
+  roundedIcon:false,
   styleIcon: {},
   underTitle:null,
   textColor: 'white',
@@ -74,6 +77,17 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     backgroundColor: '#9F041B'
 
+  },
+  roundedIcon: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    resizeMode: 'repeat',
+    maxHeight: 20,
+    maxWidth: 20,
+    height: 20,
+    width: 20,
+    borderRadius: 20,
+    overflow: 'hidden'
   },
   buttonText: {
     textAlign: "center",

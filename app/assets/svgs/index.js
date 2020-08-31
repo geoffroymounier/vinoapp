@@ -433,6 +433,7 @@ const svgs = {
   np:require('./countries/np.svg'),
   nr:require('./countries/nr.svg'),
   nu:require('./countries/nu.svg'),
+  nw:require('./countries/nw.svg'),
   nz:require('./countries/nz.svg'),
   om:require('./countries/om.svg'),
   pa:require('./countries/pa.svg'),

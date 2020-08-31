@@ -54,11 +54,14 @@ const pastillesValues = ["Apéro",
 const terrains = ["Marnes","Argiles"]
 const typologie = ["Vin Tranquille","Effervescent","Vin Moelleux/Liquoreux","Vin Doux Naturel"]
 const colors = {
-  red : {label:"Rouge",color:"#E82D49"},
-  white : {label:"Blanc",color:"#FFC401"},
-  rose : {label:"Rosé",color:"#F89BA4"},
+  red : {label:"Red",color:"#DC0101",textColor:'#787882',textActive:'white'},
+  rose : {label:"Rosé",color:"#F89BA4",textColor:'#787882',textActive:'#787882'},
+  white : {label:"White",color:"#FFFB97",textColor:'#787882',textActive:'#787882'},
 }
-
+const typeOfWine = {
+  still : {label:"Still",icon:"sparkling"},
+  sparkling : {label:"Sparkling",icon:"still"},
+}
 const cepageValues = {
     placeholder:"Cepage :",
     values: ["Pinot Noir","Pinot Gris"]
@@ -438,4 +441,4 @@ const json = {
   },
 
 }
-export {caracteristiques,typologie,colors,cepageValues,dialog,json,regions,terrains,accordsValues,pastillesValues}
+export {caracteristiques,typologie,colors,typeOfWine,cepageValues,dialog,json,regions,terrains,accordsValues,pastillesValues}

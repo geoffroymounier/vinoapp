@@ -32,8 +32,19 @@ function searchWineBase(wine) {
   })
 
 }
-function getRegions({ country }) {
-  return fetchSQL("GET", "/regions/" + country).then(json => json)
+
+function getAppelations({ typeOfAppelation, search , region_id}) {
+  return fetchSQL("GET", "/appelations", { typeOfAppelation, search, region_id }).then(json => json)
+}
+
+function getRegions({ countries }) {
+  return fetchSQL("GET", "/regions", { countries }).then(json => json)
+}
+function searchWineByRegionOrAppelation({ search }) {
+  return fetchSQL("GET", "/search/appelation", { search }).then(json => json)
+}
+function getCepage({ colors }) {
+  return fetchSQL("GET", "/cepages", { colors }).then(json => json)
 }
 function textSearch(query = {}) {
   return new Promise((resolve, reject) => {
@@ -269,23 +280,30 @@ function login(data, passport, name) {
       })
   })
 }
-async function fetchSQL(method, path, query = '', body = {}) {
-    try {
-     const res = await fetch(SQL_URL + path + query, {
-        method: method,
-        credentials: 'include',
-        ...(method !== 'GET' && { body: JSON.stringify(body) })
-        // body: JSON.stringify(body) || "",
-        // headers: {
-        //   'Content-Type': 'application/json',
-        //   'Authorization':token.signInUserSession.idToken.jwtToken
-  
-      })
-      const json = await res.json() //this is a promise
-      return json
-    } catch (e) {
-      console.log("can't perform " + method + ", message: " + e)
+async function fetchSQL(method, path, queryParams = {}, body = {}) {
+  let query = '';
+  try {
+    if (Object.keys(queryParams).length > 0) {
+      query = "?" + Object.keys(queryParams)
+        .map(k => queryParams[k] && encodeURIComponent(k) + '=' + encodeURIComponent(queryParams[k]))
+        .join('&');
     }
+    console.log(SQL_URL + path + query)
+    const res = await fetch(SQL_URL + path + query, {
+      method: method,
+      credentials: 'include',
+      ...(method !== 'GET' && { body: JSON.stringify(body) })
+      // body: JSON.stringify(body) || "",
+      // headers: {
+      //   'Content-Type': 'application/json',
+      //   'Authorization':token.signInUserSession.idToken.jwtToken
+
+    })
+    const json = await res.json() //this is a promise
+    return json
+  } catch (e) {
+    console.log("can't perform " + method + ", message: " + e)
+  }
 }
 
 function fetchData(method, path, params, body) {
@@ -374,4 +392,4 @@ function fetchData(method, path, params, body) {
   })//end promise
 }
 //
-export { getRegions, searchWineBase, askForConfirmation, resetPass, fetchCredentials, logOutUser, moveWines, deleteCellar, deleteWine, textSearch, fetchSearch, fetchCellars, fetchData, login, getUser, saveCellar, saveWine, fetchWines }
+export { searchWineByRegionOrAppelation, getAppelations, getCepage, getRegions, searchWineBase, askForConfirmation, resetPass, fetchCredentials, logOutUser, moveWines, deleteCellar, deleteWine, textSearch, fetchSearch, fetchCellars, fetchData, login, getUser, saveCellar, saveWine, fetchWines }

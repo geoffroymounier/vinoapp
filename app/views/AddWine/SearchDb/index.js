@@ -4,52 +4,55 @@ import DefaultButton from 'components/buttons/defaultButton';
 import TextInput from 'components/forms/textInput';
 import DefaultListItem from 'components/listItems/defaultListItem';
 import Separator from 'components/forms/separator';
-import { textSearch } from 'functions/api';
-import {useSelector,useDispatch} from 'react-redux';
-import {setWine,resetWine} from 'reduxStore/actions';
+import { getCountryByCode } from 'components/array/country_code'
+import { colors as getColor } from 'components/array/description';
+import {  searchWineByRegionOrAppelation } from 'functions/api';;
 const { width } = Dimensions.get('window');
 
 const SearchDb = ({ navigation }) => {
-  const dispatch = useDispatch()
-  const triggerSetWine = (e) => dispatch(setWine(e))
-
-
+  const [countries, setCountries] = useState([])
+  const [colors, setColors] = useState([])
   const [data, setData] = useState([])
-  const keyExtractor = (item) => item._id
-  const onPressItem = (wineId) => {
-    console.log({wineId})
-    Keyboard.dismiss()
-    // let newWine = {
-    //   appelation: (id == -1) ? null : this.props.appelations[id].appelation
-    // }
-    // if (id != -1) {
-    //   newWine.region = this.props.appelations[id].region
-    //   newWine.country = this.props.appelations[id].country_code
-    // }
-    const wine = data.find(w => w._id === wineId)
-    resetWine();
-    triggerSetWine(wine);
-    navigation.push('edit_wine', {
-      color: wine.color,
-    });
+  const keyExtractor = (item) => item.appelation_id
 
-    // this.props.search ? this.props.setSearch(newWine) : this.props.setWine(newWine)
+
+  const toggleColors = (key) => {
+    const index = colors.findIndex(f => f === key)
+    if (index > -1) setColors(colors.filter(f => f !== key))
+    else setColors([...colors, key])
+  }
+
+  const toggleCountries = (key) => {
+    const index = countries.findIndex(f => f === key)
+    if (index > -1) setCountries(countries.filter(f => f !== key))
+    else setCountries([...countries, key])
+  }
+
+  const onPressItem = (wineId) => {
+    Keyboard.dismiss()
+
+    const wine = data.find(w => w.appelation_id === wineId)
+    navigation.push('edit_wine',
+      {
+        screen: 'edit_wine_default',
+        params: { wine },
+      });
   };
+
   const renderItem = ({ item }) => (
     <DefaultListItem
-      id={item._id}
+      id={item.appelation_id}
       onPressItem={onPressItem}
-      title={`${item.appelation}`}
+      title={`${item.appelation_name} - ${item.region_FR}`}
       styleContainer={{ backgroundColor: "white" }}
     />
   );
 
-  const searchValueChanged = async (e) => {
-    if (e.length < 2) return
+  const searchValueChanged = async (search) => {
+    if (search.length < 2) return
     try {
-      const regexp = new RegExp(e, 'gi')
-      const results = await textSearch({ search: e })
-      setData(results.filter(r => regexp.test(r.text)).sort())
+      const results = await searchWineByRegionOrAppelation({ search: `%${search}%` })
+      setData(results)
     } catch (e) {
       console.log(e)
     }
@@ -60,50 +63,38 @@ const SearchDb = ({ navigation }) => {
         <View style={{ justifyContent: 'center', flex: 1, width, borderRadius: 20 }}>
           <Text style={styles.title}>Pre-filter</Text>
           <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: 10 }}>
-            <DefaultButton
-              // onPress={buttonPressed}
-              label={'Red'}
-              styleContainer={{
-                marginVertical: 0,
-                borderRadius: 14,
-                borderColor: '#787882',
-                borderWidth: 0.4,
-                padding: 0,
-                height: 'auto',
-                flex: 0.3,
-                backgroundColor: '#F9F6F6'
-              }}
-              styleText={{
-                paddingHorizontal: 7,
-                paddingVertical: 7,
-                fontSize: 13,
-                fontWeight: 'normal',
-                color: '#787882',
-                fontFamily: 'ProximaNova-regular'
-              }}
-            />
-            <DefaultButton
-              // onPress={buttonPressed}
-              label={'White'}
-              styleContainer={{
-                marginVertical: 0,
-                borderRadius: 14,
-                borderColor: '#787882',
-                borderWidth: 0.4,
-                padding: 0,
-                height: 'auto',
-                flex: 0.3,
-                backgroundColor: '#F9F6F6'
-              }}
-              styleText={{
-                paddingHorizontal: 7,
-                paddingVertical: 7,
-                fontSize: 13,
-                fontWeight: 'normal',
-                color: '#787882',
-                fontFamily: 'ProximaNova-regular'
-              }}
-            />
+
+            {['red', 'white'].map((e) => {
+              const { label, color, textColor, textActive } = getColor[e]
+              const onPressColor = () => toggleColors(e)
+              const isSelected = colors.find(c => c === e)
+              return (
+
+                <DefaultButton
+                  key={e}
+                  onPress={onPressColor}
+                  label={label}
+                  styleContainer={{
+                    marginVertical: 0,
+                    borderRadius: 14,
+                    borderColor: '#787882',
+                    borderWidth: 0.4,
+                    padding: 0,
+                    height: 'auto',
+                    flex: 0.3,
+                    backgroundColor: isSelected ? color : '#F9F6F6'
+                  }}
+                  styleText={{
+                    paddingHorizontal: 7,
+                    paddingVertical: 7,
+                    fontSize: 13,
+                    fontWeight: 'normal',
+                    color: isSelected ? textActive : textColor,
+                    fontFamily: 'ProximaNova-regular'
+                  }}
+                />
+              )
+            })}
           </View>
           <Separator length={'50%'} />
           <View style={{
@@ -113,37 +104,43 @@ const SearchDb = ({ navigation }) => {
             alignItems: 'center',
             marginVertical: 10
           }}>
-            {['France', 'Italy', 'Portugal', 'Spain', 'Germany', 'New World'].map((e) => (
-              <DefaultButton
-                key={e}
-                // onPress={buttonPressed}
-                label={e}
-                icon={'france'}
-                styleContainer={{
-                  marginVertical: 0,
-                  borderRadius: 14,
-                  borderColor: '#787882',
-                  borderWidth: 0.4,
-                  padding: 0,
-                  height: 'auto',
-                  alignItems: 'center',
-                  paddingHorizontal: 7,
-                  justifyContent: 'flex-start',
-                  minWidth: 90,
-                  marginVertical: 6,
-                  marginHorizontal: 11,
-                  backgroundColor: 'transparent'
-                }}
-                styleText={{
-                  paddingHorizontal: 7,
-                  paddingVertical: 7,
-                  fontSize: 11,
-                  color: '#787882',
-                  fontWeight: "normal",
-                  fontFamily: 'ProximaNova-regular'
-                }}
-              />
-            ))}
+            {['fr', 'it', 'pt', 'es', 'de', 'nw'].map((e) => {
+              const { Country: country } = e === 'nw' ? { Country: 'New world' } : getCountryByCode(e)
+              const onPressCountry = () => toggleCountries(e)
+              const isSelected = countries.find(country => country === e)
+              return (
+                <DefaultButton
+                  key={e}
+                  onPress={onPressCountry}
+                  label={country}
+                  icon={e}
+                  roundedIcon
+                  styleContainer={{
+                    marginVertical: 0,
+                    borderRadius: 14,
+                    borderColor: isSelected ? '#3B3B3D' : '#787882',
+                    borderWidth: isSelected ? 1.2 : 0.4,
+                    padding: 0,
+                    height: 30,
+                    alignItems: 'center',
+                    paddingHorizontal: 7,
+                    justifyContent: 'flex-start',
+                    minWidth: 90,
+                    marginVertical: 6,
+                    marginHorizontal: 11,
+                    backgroundColor: 'transparent'
+                  }}
+                  styleText={{
+                    paddingHorizontal: 7,
+                    paddingVertical: 7,
+                    fontSize: isSelected ? 11 : 11,
+                    color: isSelected ? '#3B3B3D' : '#787882',
+                    fontWeight: isSelected ? '600' : "normal",
+                    fontFamily: isSelected ? 'ProximaNova-Semibold' : 'ProximaNova-regular'
+                  }}
+                />
+              )
+            })}
           </View>
           <Separator length={'50%'} />
           <TextInput

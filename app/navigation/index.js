@@ -2,6 +2,7 @@ import React from 'react'
 import Image  from 'components/forms/image'
 import times  from 'assets/times.png'
 import DefaultButton  from 'components/buttons/defaultButton'
+import Icon  from 'components/thumbnails/icon';
 import {View,ScrollView,TouchableOpacity, Text,Button,Modal } from 'react-native'
 // import {DrawerItems, SafeAreaView, NavigationContainer , createAppContainer , createSwitchNavigator, createBottomTabNavigator}
 import {NavigationContainer} from '@react-navigation/native'
@@ -43,6 +44,7 @@ import Country from '../components/options/country'
 import Appelation from '../components/options/appelation'
 import Cepage from '../components/options/cepage'
 import Price from '../components/options/price'
+import Color from '../components/options/color'
 import Alcohol from '../components/options/alcohol'
 import Quantity from '../components/options/quantity'
 import Annee from '../components/options/annee'
@@ -53,7 +55,16 @@ import ChoseCellar from '../components/options/choseCellar'
 import Filter from '../views/filter'
 import Search from '../views/Search'
 
-// import Profile from '../views/profile'
+
+const optionsEditWineSection = ({route : {params}}) => ({
+  headerLeftContainerStyle: {paddingVertical : 11, paddingHorizontal : 14},
+  headerRightContainerStyle: {paddingVertical : 11, paddingHorizontal : 14},
+  headerStyle:{shadowColor: 'transparent'},
+  headerTitle: null,
+  headerLeft : (props) => (<Icon name={'close_2'} width={15} disabled={false} {...props} />),
+  headerRight : (props) => <Icon name={'check_4'} width={18} disabled={false} {...props} onPress={params.savePress}/> 
+})
+
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
@@ -87,16 +98,17 @@ const ChooseAddWineMethodModal = () => (
       component={AddWineModal} />
       <Stack.Screen name={'add_new_list'} component={ScanLabelAddWine} />
       <Stack.Screen name={'add_new_tasting_note'} component={SearchDbAddWine} />
-      <Stack.Screen name='edit_wine' component={EditWineStack} />
+      <Stack.Screen name='edit_wine'>
+         {EditWineStack}
+      </Stack.Screen>
       <Stack.Screen name={'choseCellar'} component={ChoseCellar} />
-      <Stack.Screen name={'region'}  component={Region} />
+      <Stack.Screen name={'region'}  component={Region} options={optionsEditWineSection} />
+      <Stack.Screen name={'color'}  component={Color} options={optionsEditWineSection} />
       <Stack.Screen name={'quantity'}  component={Quantity} />
-      
-
-      <Stack.Screen name={'price'}  component={Price} />
+      <Stack.Screen name={'price'}  component={Price} options={optionsEditWineSection}/>
       <Stack.Screen name={'country'} component={Country} />
-      <Stack.Screen name={'appelation'} component={Appelation} />
-      <Stack.Screen name={'cepage'} component={Cepage} />
+      <Stack.Screen name={'appelation'} component={Appelation} options={optionsEditWineSection}/>
+      <Stack.Screen name={'cepage'} component={Cepage} options={optionsEditWineSection} />
       <Stack.Screen name={'annee'} component={Annee} />
       <Stack.Screen name={'accords'} component={Accords} />
       <Stack.Screen name={'aromes'} component={Aromes} />
@@ -327,7 +339,6 @@ const AppContainer = () => (
       <Stack.Screen name={'authLoading'} component={AuthLoading}/>
       <Stack.Screen name={'login_views'}>{LoginViews}</Stack.Screen>
       <Stack.Screen name={'stack_wine'}>{StackWine}</Stack.Screen>
-      <Stack.Screen name={'alcolhol'}  component={Annee} />
       <Stack.Screen name={'ftu_open'}>{FirstTimeOpen}</Stack.Screen>
     </Stack.Navigator>
   </NavigationContainer>

@@ -21,7 +21,7 @@ const TouchableTextInput = ({label,icon,placeholder,value,rightArrow,disabled,on
 )
 const styles = StyleSheet.create({
   cartoucheRight: {
-    flexDirection:'row',flex:1,
+    flexDirection:'row',
     justifyContent:'center',
     alignItems:'center',
   },

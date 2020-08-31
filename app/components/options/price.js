@@ -1,19 +1,21 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { FlatList, View, Text, Keyboard, StyleSheet, ScrollView, TouchableOpacity, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
-import DefaultButton from 'components/buttons/defaultButton';
+import React, { useState, useLayoutEffect } from 'react';
+import { View, Text, Keyboard, StyleSheet, ScrollView, TouchableOpacity, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
 import Icon from 'components/thumbnails/icon';
-import Separator from 'components/forms/separator';
-import TextInput from 'components/forms/textInput';
 import { getCountryByCode } from 'components/array/country_code'
-import DefaultListItem from 'components/listItems/defaultListItem.js';
 import { TextInputMask } from 'react-native-masked-text'
 
-const Price = ({ }) => {
-  const inputRef = useRef()
-  const [price, setPrice] = useState({ unit: 'EUR', value: '', symbol: '€' })
-  useEffect(() => {
-    console.log(inputRef.current)
-  }, [])
+const Price = ({ route, navigation }) => {
+  const [price, setPrice] = useState({ ...route.params.price })
+
+  const savePress = () => {
+    navigation.navigate('edit_wine_default', { updatedData: {price} })
+  }
+
+  useLayoutEffect(() => {
+    navigation.setParams({ savePress });
+  }, [navigation, price]);
+
+
   const { value, symbol, unit } = price
   return (
     <KeyboardAvoidingView keyboardVerticalOffset={66} behavior='height' style={{ flex: 1, backgroundColor: 'white' }}>
@@ -35,7 +37,6 @@ const Price = ({ }) => {
               paddingBottom: 17
             }}>
               <TextInputMask
-                ref={inputRef}
                 autoFocus={true}
                 placeholder={'0,00'}
                 placeholderTextColor={'#CACACA'}
