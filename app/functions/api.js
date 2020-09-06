@@ -1,4 +1,4 @@
-import { setUser, logOut, removeCellars, removeWines, setWines, setCellars, setResults, setTimeQuery } from '../redux/actions'
+import { setUser, logOut, removeCellars, removeWines, setWines, setCellars, setResults, setTimeQuery, setWine } from '../redux/actions'
 import { getCredentials, resetKeychain, rememberEmailPassword } from './keychainFunctions'
 import NavigationService from './navigationService'
 import { Auth, API } from 'aws-amplify';
@@ -33,18 +33,31 @@ function searchWineBase(wine) {
 
 }
 
-function getAppelations({ typeOfAppelation, search , region_id}) {
-  return fetchSQL("GET", "/appelations", { typeOfAppelation, search, region_id }).then(json => json)
-}
+function sanitizeWine(itemChanged, { region, appelation, cepage, typologie, color }) {
+  return function (dispatch) {
+    fetchSQL("GET", "/sanitizeWine/" + itemChanged, { region, appelation, cepage, typologie, color })
+    .then(({arr}) => {
+      const newProps = arr.reduce((items,key) => ({...items,[key]:null}) ,{})
+      dispatch(setWine({ region, appelation, cepage, typologie, color , ...newProps }))
+    })
 
+  }
+}
+function getAppelations({ typeOfAppelation, search , region}) {
+  return fetchSQL("GET", "/appelations", { typeOfAppelation, search, region }).then(json => json)
+}
+function getColors({ appelation }) {
+  console.log("/colors", { appelation })
+  return fetchSQL("GET", "/colors", { appelation }).then(json => json)
+}
 function getRegions({ countries }) {
   return fetchSQL("GET", "/regions", { countries }).then(json => json)
 }
 function searchWineByRegionOrAppelation({ search }) {
   return fetchSQL("GET", "/search/appelation", { search }).then(json => json)
 }
-function getCepage({ colors }) {
-  return fetchSQL("GET", "/cepages", { colors }).then(json => json)
+function getCepage({ color, appelation, typologie }) {
+  return fetchSQL("GET", "/cepages", {  color, appelation, typologie }).then(json => json)
 }
 function textSearch(query = {}) {
   return new Promise((resolve, reject) => {
@@ -392,4 +405,4 @@ function fetchData(method, path, params, body) {
   })//end promise
 }
 //
-export { searchWineByRegionOrAppelation, getAppelations, getCepage, getRegions, searchWineBase, askForConfirmation, resetPass, fetchCredentials, logOutUser, moveWines, deleteCellar, deleteWine, textSearch, fetchSearch, fetchCellars, fetchData, login, getUser, saveCellar, saveWine, fetchWines }
+export {sanitizeWine, getColors, searchWineByRegionOrAppelation, getAppelations, getCepage, getRegions, searchWineBase, askForConfirmation, resetPass, fetchCredentials, logOutUser, moveWines, deleteCellar, deleteWine, textSearch, fetchSearch, fetchCellars, fetchData, login, getUser, saveCellar, saveWine, fetchWines }

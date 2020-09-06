@@ -1,15 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
-
+import { sanitizeWine, getColors } from 'functions/api'
+import { useDispatch, useSelector } from 'react-redux'
 import { colors, typeOfWine } from 'components/array/description'
 import Icon from 'components/thumbnails/icon';
 import Separator from 'components/forms/separator';
 const { width, height } = Dimensions.get('window')
 
-const Region = ({ route, navigation }) => {
-    const [updatedData, setUpdatedData] = useState({ ...route.params })
+const Color = ({ route, navigation }) => {
+    const dispatch = useDispatch()
+    const [data, setData] = useState([])
+    const storeValue = useSelector((state) => ({
+      color : state.wine.color,
+      typologie: state.wine.typologie,
+      region: state.wine.region,
+      country: state.wine.country,
+      appelation: state.wine.appelation,
+    }))
+
+    const [updatedData, setUpdatedData] = useState({ ...storeValue })
+  
+    useEffect(() => {
+        const getData = async () => {
+          const response = await getColors({ appelation : updatedData.appelation })
+          const data = response.map(r => ({ key: r.id, color: r.color, typologie: r.typologie }))
+          setData(data)
+        }
+        getData()
+      }, [])
     const savePress = () => {
-        navigation.navigate('edit_wine_default', { updatedData })
+        dispatch(sanitizeWine('color',{...storeValue,...updatedData}))
+        navigation.navigate(route.params.previousScreen || 'edit_wine_default', {wine : updatedData})
     }
 
     React.useLayoutEffect(() => {
@@ -34,15 +55,18 @@ const Region = ({ route, navigation }) => {
                 {Object.keys(typeOfWine).map(e => {
                     const { icon, label } = typeOfWine[e]
                     const isActive = updatedData.typologie === e
+                    const isDisabled= data.findIndex(d => (!updatedData.color || d.color === updatedData.color) && d.typologie === e) === -1
                     const onPress = () => setUpdatedData({...updatedData, typologie: e })
                     return (
                         <TouchableOpacity
                             key={e}
                             onPress={onPress}
+                            disabled={isDisabled}
                             style={{
                                 flexDirection: 'row',
                                 alignItems: 'center',
-                                marginHorizontal:15
+                                marginHorizontal:15,
+                                ...(isDisabled && {opacity : 0.5})
                             }} >
                             
                             <View style={{
@@ -52,7 +76,7 @@ const Region = ({ route, navigation }) => {
                                 justifyContent: 'center',
                             }}>
                                 {isActive && <Icon styleContainer={{ zIndex: 2, position: 'absolute', right: -5, top: -5 }} name={'checked'} width={14} height={14} />}
-                                <Icon name={icon} width={30} />
+                                <Icon name={icon} styleContainer={{tintColor:'lightgray'}} width={30} />
                             </View>
                             <Text style={{ ...styles.textCountry, ...(isActive && styles.textCountrySelected),marginHorizontal:13 }}>{label}</Text>
                         </TouchableOpacity>
@@ -65,11 +89,13 @@ const Region = ({ route, navigation }) => {
             <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: 20 }}>
                 {Object.keys(colors).map(e => {
                     const { label, color } = colors[e]
+                    const isDisabled= data.findIndex(d => (!updatedData.typologie || d.typologie === updatedData.typologie) && d.color === e) === -1
                     const isActive = updatedData.color === e
                     const onPress = () => setUpdatedData({ ...updatedData,color: e })
                     return (
                         <TouchableOpacity
                             key={e}
+                            disabled={isDisabled}
                             onPress={onPress}
                             style={{
                                 alignItems: 'center',
@@ -82,7 +108,7 @@ const Region = ({ route, navigation }) => {
                                 borderRadius:45,
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                backgroundColor: color
+                                backgroundColor: isDisabled ? 'lightgrey' : color
                             }} />
 
                             <View style={{
@@ -190,4 +216,4 @@ const styles = StyleSheet.create({
         fontFamily: 'ProximaNova-Semibold'
     }
 });
-export default Region;
+export default Color;

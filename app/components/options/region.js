@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useMemo, useLayoutEffect } from 'react';
 import { FlatList, View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import DefaultButton from 'components/buttons/defaultButton';
+import {setWine} from 'reduxStore/actions'
+import {sanitizeWine} from 'functions/api';
+import { useDispatch, useSelector } from 'react-redux'
 import { getRegions } from 'functions/api';
 import { getCountryByCode } from 'components/array/country_code'
 import Icon from 'components/thumbnails/icon';
@@ -38,36 +41,49 @@ const filterArray = [
   }
 ]
 const Region = ({ route, navigation }) => {
-  const [updatedData, setUpdatedData] = useState({ ...route.params })
+  const dispatch = useDispatch()
+  const storeValue = useSelector(({wine}) => ({
+    country: wine.country,
+    region: wine.region,
+    appelation:wine.appelation, 
+    cepage:wine.cepage, 
+    type:wine.typologie, 
+    color:wine.color
+  })) 
+  const [updatedData, setUpdatedData] = useState(storeValue)
+
+
   const [data, setData] = useState([])
-  const [filter, setFilter] = useState(filterArray.find(f => f.subItems.findIndex(item => item === updatedData.country_id) > -1) || {})
-  const [countries, setCountries] = useState(updatedData.country_id ? [updatedData.country_id] : [])
+  const [filter, setFilter] = useState(filterArray.find(f => f.subItems.findIndex(item => item === updatedData.country) > -1) || {})
+  const [countries, setCountries] = useState(updatedData.country ? [updatedData.country] : [])
   const [modal, setModal] = useState(null)
   const toggleCountries = (key) => {
     const index = countries.findIndex(f => f === key)
     if (index > -1) setCountries(countries.filter(f => f !== key))
     else setCountries([...countries.filter(c => filter.subItems.findIndex(item => item === c) === -1), key])
   }
-  const onToggleItem = ({ region_FR, region_id, country_id }) => {
-    setUpdatedData({ region_FR, region_id, country_id })
+  const onToggleItem = ({region, country }) => {
+    setUpdatedData({ region, country })
   }
   const toggleFilter = (item) => {
     setFilter(item.key === filter.key ? {} : item)
   }
   const keyExtractor = (item) => item.key.toString();
+
   useEffect(() => {
     if (!countries.length) {
       return setData([]) // if we deselect all, just clear the data list
     }
     const getData = async () => {
       const response = await getRegions({ countries: countries.join(',') })
-      const data = response.map(r => ({ key: r.region_id, label: r.region_FR, country: r.country_id }))
+      const data = response.map(r => ({ key: r.id, label: r.name, country: r.country }))
       setData(data)
     }
     getData()
   }, [countries])
   const savePress = () => {
-    navigation.navigate('edit_wine_default', { updatedData })
+    dispatch(sanitizeWine('region',{...storeValue,...updatedData}))
+    navigation.navigate(route.params.previousScreen || 'edit_wine_default')
   }
   useLayoutEffect(() => {
     navigation.setParams({ savePress });
@@ -76,12 +92,12 @@ const Region = ({ route, navigation }) => {
   
   
   const renderItem = ({ item }) => {
-    const onPressItem = () => onToggleItem({ region_FR: item.label, region_id: item.key, country_id: item.country })
+    const onPressItem = () => onToggleItem({ region: item.label, country: item.country })
     return (
       <DefaultListItem
         id={item.key}
         onPressItem={onPressItem}
-        selected={updatedData.region_id === item.key}
+        selected={updatedData.region === item.label}
         title={item.label}
       />
     )

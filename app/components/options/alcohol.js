@@ -1,20 +1,23 @@
-import React, { useRef, useState, useEffect } from 'react'
-import { Text, StyleSheet, ScrollView, TouchableOpacity, View, Dimensions, PanResponder } from 'react-native';
-import Animated, { interpolate } from "react-native-reanimated";
+import React, { useRef, useState, useLayoutEffect } from 'react'
+import { Text, StyleSheet, View, Dimensions, ScrollView } from 'react-native';
+import Animated from "react-native-reanimated";
+import Icon from 'components/thumbnails/icon';
+import Separator from 'components/forms/separator';
 import { State, PanGestureHandler } from 'react-native-gesture-handler'
 import Svg, {
     Stop,
     LinearGradient,
     Defs,
-    Polygon,
     Path,
-    G
 } from 'react-native-svg'
 const { width, height } = Dimensions.get('window')
-const { event, block, min, max, cond, eq, Value, set, add, call } = Animated;
+const { event, block, min, max, cond, eq, Value, set, add, call, interpolate } = Animated;
 
-const Alcohol = ({
-}) => {
+const Alcohol = ({route, navigation}) => {
+    const HEIGHT = 300;
+    const DEG_MAX = 24;
+    const DEG_MIN = 5;
+    const COLOR= "#FFFB97";
     const [state, setState] = useState(0)
     const [svgHeight, setSvgHeight] = useState('0')
     const yValue = useRef(new Value(0)).current;
@@ -26,14 +29,24 @@ const Alcohol = ({
     const heightValue = useRef(new Value(0)).current;
     const setValue = async ([height]) => {
         setState(height.toFixed(1))
-        setSvgHeight((100 * (1 - (height / 24))).toFixed(0))
+        setSvgHeight((100 * (1 - (0.8 * height / DEG_MAX))).toFixed(0))
     }
+
+    const savePress = () => {
+        navigation.navigate(route.params.previousScreen || 'edit_wine_default', {wine : {alcohol:state}})
+      }
+      useLayoutEffect(() => {
+        navigation.setParams({ savePress });
+      }, [navigation]);
+      // trim the data array regarding the switch tab updatedData
+  
+      
     const gestureEvent = event([
         {
             nativeEvent: ({ translationX: x, translationY: y, state }) => block([
                 set(yValue, min(maxValue, max(minValue, add(y, yOffset)))),
                 set(heightValue, interpolate(yValue, { inputRange: [minValue, maxValue], outputRange: [350, 50] })),
-                set(alcoholValue, interpolate(heightValue, { inputRange: [50, 350], outputRange: [5, 24] })),
+                set(alcoholValue, interpolate(heightValue, { inputRange: [50, 350], outputRange: [DEG_MIN, DEG_MAX] })),
                 call([alcoholValue], setValue),
                 cond(
                     eq(state, State.END),
@@ -44,35 +57,52 @@ const Alcohol = ({
             ])
         }
     ])
-    console.log(svgHeight)
+
     return (
-        <>
-            <View style={{ width, height, justifyContent: 'center', alignItems: 'center', }}>
-                <PanGestureHandler
-                    onHandlerStateChange={gestureEvent}
-                    onGestureEvent={gestureEvent} style={{ ...styles.box, backgroundColor: 'red' }}>
-                    <Animated.View style={styles.box}>
-                        <Svg x="0" y="0" enableBackground="0 0 477.614 477.614" viewBox="0 0 477.614 477.614" width="350" height="350" >
-                            <Defs>
-                                <LinearGradient id="half" gradientTransform="rotate(90)" spreadMethod="pad">
-                                    <Stop offset="0%" stopColor="white" />
-                                    <Stop offset={`${svgHeight}%`} stopColor="white" />
-                                    <Stop offset={`${svgHeight}%`} stopColor="blue" />
-                                    <Stop offset="100%" stopColor="blue" />
-                                </LinearGradient>
-                            </Defs>
-                            <Path d="M84.9182 2.19768L84.9184 2.1979C85.1049 2.41106 103.938 24.063 122.503 50.6424C135.204 68.8246 144.77 84.9123 151.161 98.809C157.553 112.708 160.762 124.403 160.762 133.803C160.762 155.829 152.518 174.565 136.924 187.998C122.468 200.452 102.42 207.316 80.4682 207.316C58.5183 207.316 38.4704 200.452 24.0141 187.999C8.41991 174.566 0.174099 155.83 0.174099 133.803C0.174099 124.403 3.38352 112.708 9.77543 98.809C16.1663 84.9123 25.7327 68.8246 38.4329 50.6424C56.8789 24.2337 75.5911 2.68939 76.0125 2.20412L76.0181 2.19777C77.1407 0.912158 78.763 0.174099 80.4682 0.174099C82.1735 0.174099 83.7973 0.912206 84.9182 2.19768ZM129.202 179.062L129.209 179.057L129.215 179.051C142.13 167.926 148.953 152.276 148.953 133.803C148.953 125.713 145.819 115.062 139.743 102.219C133.665 89.3724 124.634 74.3151 112.822 57.4052C100.075 39.1536 87.2238 23.3034 80.6019 15.3672L80.4682 15.207L80.3345 15.3673C73.6999 23.3208 60.8107 39.2201 48.0539 57.4923C36.2618 74.3816 27.2463 89.4207 21.1782 102.253C15.112 115.081 11.9835 125.72 11.9835 133.803C11.9835 152.276 18.8059 167.926 31.7209 179.051C44.0454 189.667 61.3588 195.506 80.4682 195.506H80.4871L80.5057 195.502C84.7134 194.575 88.4167 193.771 91.6984 193.059C102.266 190.765 108.463 189.42 113.062 187.947C119.105 186.012 122.399 183.853 129.202 179.062Z" fill="#787882" stroke="white" strokeWidth="0.348197"/>
-                            <Path fill="url(#half)" d="
-                                M251.385,5.277c-6.823-6.947-17.985-7.047-24.931-0.225c-0.076,0.074-0.151,0.149-0.225,0.225
-                                C219.778,12.325,68.14,179.254,68.14,306.947c0,113.254,57.412,170.667,170.667,170.667s170.667-57.412,170.667-170.667
-			                    C409.474,179.254,257.836,12.325,251.385,5.277z"/>
-                        </Svg>
-                    </Animated.View>
-                </PanGestureHandler>
-                <Text>{state}</Text>
+        <ScrollView style={{ flex: 1, backgroundColor: 'white', paddingHorizontal: 10, }}>
+            <View
+                style={{
+                    alignItems: "center",
+                    marginBottom: 24
+                }}>
+                <Icon name={'alcohol_3'} width={64} height={64} />
+                <Text style={styles.centeredText}>Alcohol Degree</Text>
             </View>
-        </>
-    )
+            
+            <Separator transparent />
+            <PanGestureHandler
+                onHandlerStateChange={gestureEvent}
+                onGestureEvent={gestureEvent} style={{ ...styles.box, backgroundColor: 'red' }}>
+                <Animated.View style={{ ...styles.box, height: HEIGHT }}>
+                    <Svg viewBox="0 -20 512 552" width="350" height={HEIGHT} >
+                        <Defs>
+                            <LinearGradient id="grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <Stop offset="0%" stopColor="white" />
+                                <Stop offset={`${svgHeight}%`} stopColor="white" />
+                                <Stop offset={`${svgHeight}%`} stopColor={COLOR} />
+                                <Stop offset="100%" stopColor={COLOR} />
+                            </LinearGradient>
+                        </Defs>
+                        <Path
+                            fill="url(#grad)"
+                            stroke="#787882"
+                            strokeWidth="20"
+                            d="M349.414,130.314c-40.321-62.959-81.228-114.885-81.636-115.403L255.999,0l-11.778,14.912
+		                    	c-0.408,0.517-41.315,52.443-81.636,115.403C107.413,216.46,79.44,281.687,79.44,324.184C79.44,427.746,158.644,512,256,512
+                                s176.56-84.254,176.56-187.816C432.559,281.687,404.586,216.46,349.414,130.314z"
+                        />
+                    </Svg>
+                    <Animated.View style={{
+                        position: 'absolute',
+                        top: `${(287 / 300) * svgHeight}%`,
+                        transform: [{ translateY: 15 }]
+                    }}>
+                        <Text style={styles.text}>{`${state} %`}</Text>
+                    </Animated.View>
+                </Animated.View>
+            </PanGestureHandler>
+             </ScrollView>
+             )
 }
 const styles = StyleSheet.create({
     title: {
@@ -81,7 +111,8 @@ const styles = StyleSheet.create({
         fontFamily: "ProximaNova-Regular"
     },
     box: {
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     categoryTitle: {
         fontWeight: "600",
@@ -99,11 +130,18 @@ const styles = StyleSheet.create({
         height: 20,
         width: 20
     },
-    buttonText: {
-        paddingHorizontal: 0,
-        paddingVertical: 0,
-        fontSize: 11,
-    }
+    text: {
+        color: '#787882',
+        fontFamily: "ProximaNova-Bold",
+        fontSize: 20,
+    },
+    centeredText: {
+        marginTop:5,
+        fontSize: 15,
+        alignSelf: 'center',
+        color: '#B2B2B8',
+        fontFamily: 'ProximaNova-Semibold'
+      },
 });
 
 export default Alcohol

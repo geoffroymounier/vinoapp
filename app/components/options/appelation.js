@@ -1,6 +1,9 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useCallback } from 'react';
 import { FlatList, View, Text, StyleSheet, ScrollView } from 'react-native';
 import DefaultButton from 'components/buttons/defaultButton';
+import { useFocusEffect } from '@react-navigation/native';
+import { sanitizeWine } from 'functions/api'
+import { useDispatch, useSelector } from 'react-redux'
 import Icon from 'components/thumbnails/icon';
 import { getAppelations } from 'functions/api';
 import Separator from 'components/forms/separator';
@@ -32,10 +35,20 @@ const filterArray = [
   }
 ]
 const Appelation = ({ navigation, route }) => {
+
+  const dispatch = useDispatch()
+  const storeValue = useSelector((state) => ({
+    region: state.wine.region,
+    country: state.wine.country,
+    appelation: state.wine.appelation,
+  }))
+  const [updatedData, setUpdatedData] = useState({ ...storeValue })
+
+
   const [typeOfAppelation, setTypeOfAppelation] = useState([])
   const [data, setData] = useState([])
   const [search, setSearch] = useState('')
-  const [updatedData, setUpdatedData] = useState({ ...route.params })
+
   const [modal, setModal] = useState(null)
   const toggleType = (key) => {
     const index = typeOfAppelation.findIndex(f => f === key)
@@ -44,23 +57,35 @@ const Appelation = ({ navigation, route }) => {
   }
   const _keyExtractor = (item, index) => item.key.toString();
 
-  const onPressItem = ({ key,label,type }) => {
-    setUpdatedData({ ...updatedData, appelation_id:key, appelation_name:label, appelation_type:type })
+  const onPressItem = ({ key, label, type }) => {
+    setUpdatedData({ ...updatedData, appelation: key, appelation: label, appelation_type: type })
   }
+
+
+  const resetStoreValue = useCallback(() => {
+      setUpdatedData({ ...storeValue })
+    },
+    [storeValue.region],
+  )
+
+  useFocusEffect(resetStoreValue)
+
   useEffect(() => {
     const getData = async () => {
       const response = await getAppelations({
-        region_id: updatedData.region_id,
+        region: updatedData.region,
         search: `%${search}%`,
         typeOfAppelation: typeOfAppelation.length ? typeOfAppelation.join(',') : ''
       })
-      const data = response.map(r => ({ key: r.appelation_id, label: r.appelation_name, type: r.type }))
+      const data = response.map(r => ({ key: r.appelation, label: r.appelation, type: r.type }))
       setData(data)
     }
     getData()
-  }, [typeOfAppelation, updatedData.region_id, search])
+  }, [typeOfAppelation, updatedData.region, search])
+
   const savePress = () => {
-    navigation.navigate('edit_wine_default', { updatedData })
+    dispatch(sanitizeWine('appelation',{...storeValue,...updatedData}))
+    navigation.navigate(route.params.previousScreen || 'edit_wine_default')
   }
   useLayoutEffect(() => {
     navigation.setParams({ savePress });
@@ -72,12 +97,11 @@ const Appelation = ({ navigation, route }) => {
       <DefaultListItem
         id={item.key}
         onPressItem={didPress}
-        selected={updatedData.appelation_id == item.key}
+        selected={updatedData.appelation == item.key}
         title={item.label}
       />
     )
   };
-
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: 'white', paddingHorizontal: 10, }}>
@@ -98,15 +122,21 @@ const Appelation = ({ navigation, route }) => {
       <Separator transparent />
       <Text style={styles.label}>Data-Driven Research</Text>
       <TouchableTextInput
-        value={updatedData.region_FR}
+        value={updatedData.region}
         icon={<Icon
           disabled
           height={20}
           width={20}
-          name={updatedData.country_id}
+          name={updatedData.country}
         />}
         placeholder={'Region'}
-        onPress={() => { }}
+        onPress={() => navigation.push('region', {
+          previousScreen: 'appelation',
+          wine: {
+            country: updatedData.country,
+            region: updatedData.region,
+          }
+        })}
       />
       <Separator transparent />
       <Text style={styles.centeredText}>Wine Color</Text>

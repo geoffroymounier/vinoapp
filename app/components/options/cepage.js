@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useCallback } from 'react';
 import { FlatList, View, Text, StyleSheet, ScrollView } from 'react-native';
 import DefaultButton from 'components/buttons/defaultButton';
 import Icon from 'components/thumbnails/icon';
+import { useFocusEffect } from '@react-navigation/native';
 import Separator from 'components/forms/separator';
 import TextInput from 'components/forms/textInput';
-import {getCepage} from 'functions/api';
+import {sanitizeWine,getCepage} from 'functions/api';
+import { useDispatch, useSelector } from 'react-redux'
 import TouchableTextInput from 'components/forms/touchableTextInput'
 import DefaultListItem from 'components/listItems/defaultListItem.js';
 
@@ -31,9 +33,20 @@ const filterArray = [
     question: 'CIYHHKJVBCKJHEF'
   }
 ]
-const Region = ({ route, navigation }) => {
-  const [updatedData, setUpdatedData] = useState({ ...route.params })
-  const {grape = []} = updatedData
+const Cepage = ({ route, navigation }) => {
+  const dispatch = useDispatch()
+  const storeValue = useSelector(({wine}) => ({
+    country: wine.country,
+    region: wine.region,
+    appelation:wine.appelation, 
+    cepage:wine.cepage, 
+    typologie:wine.typologie, 
+    color:wine.color
+  })) 
+  const [updatedData, setUpdatedData] = useState(storeValue)
+
+
+  const {cepage = [], appelation, color, typologie} = updatedData
   const [data, setData] = useState([])
   const [colors, setColors] = useState([])
   const [modal, setModal] = useState(null)
@@ -44,25 +57,31 @@ const Region = ({ route, navigation }) => {
   }
   const _keyExtractor = (item) => item.key.toString();
 
-  const onPressItem = ({key,label}) => {
-    const index = grape.findIndex(f => f.key === key)
-    if (index > -1) setUpdatedData({...updatedData, grape : grape.filter(f => f.key !== key)})
-    else setUpdatedData({...updatedData, grape : [...grape,{key,cepage_name:label}]})
+  const onPressItem = ({label}) => {
+    const index = cepage.findIndex(f => f === label)
+    if (index > -1) setUpdatedData({...updatedData, cepage : cepage.filter(f => f !== label)})
+    else setUpdatedData({...updatedData, cepage : [...cepage,label]})
   };
-
   useEffect(() => {
     const getData = async () => {
-      const response = await getCepage({ 
-        colors: colors.length ? colors.join(',') : '',
-      })
-      const data = response.map(r => ({ key: r.cepage_id, label: r.cepage_name}))
+      const response = await getCepage({ appelation, color,typologie })
+      const data = response.map(r => ({ key: r.id, label: r.cepage}))
       setData(data)
     }
     getData()
-  }, [colors])
+  }, [appelation,color,typologie])
+
+  const resetStoreValue = useCallback(() => {
+    setUpdatedData({ ...storeValue })
+  },
+  [storeValue.appelation],
+)
+
+useFocusEffect(resetStoreValue)
 
   const savePress = () => {
-    navigation.navigate('edit_wine_default', { updatedData })
+    dispatch(sanitizeWine('cepage',{...storeValue,...updatedData}))
+    navigation.navigate(route.params.previousScreen || 'edit_wine_default')
   }
   useLayoutEffect(() => {
     navigation.setParams({ savePress });
@@ -74,7 +93,7 @@ const Region = ({ route, navigation }) => {
     <DefaultListItem
       id={item.key}
       onPressItem={didPress}
-      selected={grape.findIndex(g => g.key === item.key) > -1}
+      selected={cepage.findIndex(g => g === item.label) > -1}
       title={item.label}
     />
   )};
@@ -99,25 +118,29 @@ const Region = ({ route, navigation }) => {
       <Text style={styles.label}>Data-Driven Selection</Text>
       <View style={{flexDirection:'column',}}>
       <TouchableTextInput
-        value={updatedData.region_FR}
+        value={updatedData.region}
         icon={<Icon
           disabled
           height={20}
           width={20}
-          name={updatedData.country_id}
+          name={updatedData.country}
         />}
-        placeholder={'Region'}
-        onPress={() => { }}
+        disabled
+        placeholder={'Cepage'}
+        onPress={() => {}}
       />
+      
       <TouchableTextInput
         icon={<Icon
           height={22}
           width={22}
           name={'appellation_2'}
         />}
-        value={updatedData.appelation_name}
+        value={updatedData.appelation}
         placeholder={'Appellation'}
-        onPress={() => { }}
+        onPress={() => navigation.push('appelation', {
+          previousScreen:'cepage',
+        })}
       />
       </View>
       <Separator transparent />
@@ -235,4 +258,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Region;
+export default Cepage;

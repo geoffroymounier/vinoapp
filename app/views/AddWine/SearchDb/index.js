@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Keyboard, SafeAreaView, ScrollView, FlatList, Dimensions, StyleSheet, Text, View } from 'react-native';
 import DefaultButton from 'components/buttons/defaultButton';
+import { useDispatch } from 'react-redux'
+import {resetWine, setWine} from 'reduxStore/actions'
 import TextInput from 'components/forms/textInput';
 import DefaultListItem from 'components/listItems/defaultListItem';
 import Separator from 'components/forms/separator';
@@ -10,10 +12,11 @@ import {  searchWineByRegionOrAppelation } from 'functions/api';;
 const { width } = Dimensions.get('window');
 
 const SearchDb = ({ navigation }) => {
+  const dispatch = useDispatch()
   const [countries, setCountries] = useState([])
   const [colors, setColors] = useState([])
   const [data, setData] = useState([])
-  const keyExtractor = (item) => item.appelation_id
+  const keyExtractor = (item) => item.appelation
 
 
   const toggleColors = (key) => {
@@ -30,20 +33,21 @@ const SearchDb = ({ navigation }) => {
 
   const onPressItem = (wineId) => {
     Keyboard.dismiss()
-
-    const wine = data.find(w => w.appelation_id === wineId)
-    navigation.push('edit_wine',
+    dispatch(resetWine())
+    
+    const wine = data.find(w => w.appelation === wineId)
+    dispatch(setWine(wine))
+    navigation.navigate('edit_wine',
       {
-        screen: 'edit_wine_default',
-        params: { wine },
+        screen: 'edit_wine_default'
       });
   };
 
   const renderItem = ({ item }) => (
     <DefaultListItem
-      id={item.appelation_id}
+      id={item.appelation}
       onPressItem={onPressItem}
-      title={`${item.appelation_name} - ${item.region_FR}`}
+      title={`${item.appelation} - ${item.region}`}
       styleContainer={{ backgroundColor: "white" }}
     />
   );

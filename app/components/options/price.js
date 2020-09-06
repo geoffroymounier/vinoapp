@@ -1,22 +1,25 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { View, Text, Keyboard, StyleSheet, ScrollView, TouchableOpacity, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
 import Icon from 'components/thumbnails/icon';
+import {setWine} from 'reduxStore/actions'
+import { useDispatch, useSelector } from 'react-redux'
 import { getCountryByCode } from 'components/array/country_code'
 import { TextInputMask } from 'react-native-masked-text'
 
 const Price = ({ route, navigation }) => {
-  const [price, setPrice] = useState({ ...route.params.price })
-
+  const dispatch = useDispatch()
+  const reduxPrice = useSelector((state) => state.wine.price) || { unit : 'EUR', value : '', symbol : '€' } 
+  const [price,setPrice] = useState(reduxPrice)
+  
   const savePress = () => {
-    navigation.navigate('edit_wine_default', { updatedData: {price} })
+    dispatch(setWine({price}))
+    navigation.navigate('edit_wine_default')
   }
 
   useLayoutEffect(() => {
     navigation.setParams({ savePress });
-  }, [navigation, price]);
-
-
-  const { value, symbol, unit } = price
+  }, [navigation,price]);
+  const {value,symbol,unit} = price
   return (
     <KeyboardAvoidingView keyboardVerticalOffset={66} behavior='height' style={{ flex: 1, backgroundColor: 'white' }}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

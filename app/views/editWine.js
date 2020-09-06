@@ -31,11 +31,17 @@ import { saveWine } from '../functions/api'
 import testLabel from 'assets/test-label.png'
 const EditWine = ({ navigation, route }) => {
   const dispatch = useDispatch()
+  const wine = useSelector(state => state.wine)
   const [modalColor, setModalColor] = useState('')
   const [choices, setChoices] = useState([])
+  // const [wine,setUpdatedData] = useState({...route.params.wine})
+  // useEffect(() => {
+  //   setUpdatedData({ 
+  //     ...wine,
+  //     ...route.params.wine,
+  //   })
+  // },[route.params.wine])
   const [modalPastille, setModalPastille] = useState('')
-  const wine = {...route.params.wine,...route.params.updatedData}
-  console.log({wine,...route.params.updatedData})
   const cellarId = useSelector(state => state.cellar._id)
   const triggerSaveWine = (wine) => dispatch(saveWine(wine))
   const triggerSetWine = (wine) => dispatch(setWine(wine))
@@ -93,10 +99,10 @@ const EditWine = ({ navigation, route }) => {
     appelation,
     annee,
     before,
-    apogee, typologie, temperature, cuisine_monde, price , vendor, terrain, stock, nez, legumes, viandes, poissons, desserts, aperitif, fromages, bouche, color, domain, carafage, commentaire, photo } = wine
+    apogee, typologie, temperature, cuisine_monde, price, vendor, terrain, stock, nez, legumes, viandes, poissons, desserts, aperitif, fromages, bouche, color, domain, carafage, commentaire, photo } = wine
   const backgroundTextColor = (colors[color] || {}).color == '#FFC401' ? '#939393' : 'white'
   const backgroundColor = (colors[color] || {}).color || '#e6e6e6'
-  const {value : priceValue = '', unit:priceUnit = ''} = price || {}
+  const { value: priceValue = '', unit: priceUnit = '' } = price || {}
 
   return (
     <KeyboardAvoidingView behavior='position' keyboardShouldPersistTaps="always" >
@@ -174,25 +180,18 @@ const EditWine = ({ navigation, route }) => {
                 />}
                 value={color ? `${color}, ${typologie || ''}` : ''}
                 placeholder={'Color & Type'}
-                onPress={() => navigation.push('color',{
-                  color : wine.color,
-                  typologie: wine.typologie
-                })}
+                onPress={() => navigation.navigate('color', {})}
               />
               <TouchableTextInput
-                value={wine.region_FR}
+                value={wine.region}
                 icon={<Icon
                   disabled
                   height={20}
                   width={20}
-                  name={wine.country_id}
+                  name={wine.country}
                 />}
                 placeholder={'Region'}
-                onPress={() => navigation.push('region',{
-                  country_id:wine.country_id,
-                  region_id : wine.region_id,
-                  region_name: wine.region_FR
-                })}
+                onPress={() => navigation.navigate('region', {})}
               />
               <TouchableTextInput
                 icon={<Icon
@@ -212,9 +211,7 @@ const EditWine = ({ navigation, route }) => {
                 />}
                 value={priceValue ? `${priceValue} ${priceUnit}` : ''}
                 placeholder={'Price'}
-                onPress={() => navigation.push('price',{
-                  price:wine.price || { unit: 'EUR', value: '', symbol: '€' },
-                })}
+                onPress={() => navigation.navigate('price',{})}
               />
               <TouchableTextInput
                 icon={<Icon
@@ -309,15 +306,9 @@ const EditWine = ({ navigation, route }) => {
                       width={22}
                       name={'appellation_2'}
                     />}
-                    value={wine.appelation_name}
+                    value={wine.appelation}
                     placeholder={'Appellation'}
-                    onPress={() => navigation.push('appelation',{
-                      region_FR:wine.region_FR,
-                      region_id:wine.region_id,
-                      country_id:wine.country_id,
-                      appelation_id:wine.appelation_id,
-                      appelation_name:wine.appelation_name,
-                    })}
+                    onPress={() => navigation.navigate('appelation', {})}
                   />
                   <TouchableTextInput
                     icon={<Icon
@@ -325,15 +316,9 @@ const EditWine = ({ navigation, route }) => {
                       width={22}
                       name={'grape_1'}
                     />}
-                    value={((wine.grape||[]).map(({cepage_name}) => cepage_name)||[]).join(', ')}
+                    value={(wine.cepage||[]).join(', ')}
                     placeholder={'Grape Variety'}
-                    onPress={() => navigation.push('cepage',{
-                      grape:wine.grape,
-                      region_FR:wine.region_FR,
-                      country_id:wine.country_id,
-                      appelation_id:wine.appelation_id,
-                      appelation_name:wine.appelation_name,
-                    })}
+                    onPress={() => navigation.navigate('cepage', {})}
                   />
                   <TouchableTextInput
                     icon={<Icon
@@ -373,7 +358,15 @@ const EditWine = ({ navigation, route }) => {
                     />}
                     value={stock}
                     placeholder={'Alcohol degree'}
-                    onPress={() => setModalColor('modalColor')}
+                    onPress={() => navigation.push('alcohol', {
+                      wine: {
+                        region_FR: wine.region_FR,
+                        region_id: wine.region_id,
+                        country_id: wine.country_id,
+                        appelation_id: wine.appelation_id,
+                        appelation_name: wine.appelation_name,
+                      }
+                    })}
                   />
                   <TouchableTextInput
                     icon={<Icon

@@ -106,6 +106,7 @@ const ChooseAddWineMethodModal = () => (
       <Stack.Screen name={'color'}  component={Color} options={optionsEditWineSection} />
       <Stack.Screen name={'quantity'}  component={Quantity} />
       <Stack.Screen name={'price'}  component={Price} options={optionsEditWineSection}/>
+      <Stack.Screen name={'alcohol'}  component={Alcohol} options={optionsEditWineSection}/>
       <Stack.Screen name={'country'} component={Country} />
       <Stack.Screen name={'appelation'} component={Appelation} options={optionsEditWineSection}/>
       <Stack.Screen name={'cepage'} component={Cepage} options={optionsEditWineSection} />
